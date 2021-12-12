@@ -1,12 +1,20 @@
 package com.example.go4lunch;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.login.widget.LoginButton;
-import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.viewmodel.RequestCodes;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -15,36 +23,11 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.util.Log;
-import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
-
-import java.util.Collections;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,9 +45,13 @@ public class MainActivity extends AppCompatActivity {
         facebook_button= findViewById(R.id.facebook_button);
         googleSignIn();
         mAuth = FirebaseAuth.getInstance();
+
+
         ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
+
+                    // Le resultat est un résultCanceled
                     if (result.getResultCode() == Activity.RESULT_OK) {
 
                         Intent data = result.getData();
@@ -75,7 +62,11 @@ public class MainActivity extends AppCompatActivity {
                             assert account != null;
                             firebaseAuthWithGoogle(account.getIdToken());
 
-                            SharedPreferences.Editor editor = getApplicationContext()
+
+                            // récupérer les datas par firebase
+
+
+                            @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = getApplicationContext()
                                     .getSharedPreferences("My prefs",MODE_PRIVATE)
                                     .edit();
                             editor.putString("username",account.getDisplayName());
@@ -125,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Intent intent = new Intent(MainActivity.this,ProfilActivity.class);
+                            Intent intent = new Intent(MainActivity.this,MapsActivity.class);
                             startActivity(intent);
 
                         } else {

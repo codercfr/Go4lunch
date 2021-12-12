@@ -26,21 +26,7 @@ public class ProfilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_activity);
-
-        tvUserName = findViewById(R.id.userName);
-        tvUserEmail = findViewById(R.id.userEmail);
-        userImageView = findViewById(R.id.userImage);
         btnSignOut = findViewById(R.id.btnLogout);
-
-        SharedPreferences preferences = this.getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        String userName = preferences.getString("username","");
-        String userEmail = preferences.getString("useremail", "");
-        String userImageUrl = preferences.getString("userPhoto","");
-
-        tvUserName.setText(userName);
-        tvUserEmail.setText(userEmail);
-        Glide.with(this).load(userImageUrl).into(userImageView);
-
         btnSignOut.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
             goToMainActivity();

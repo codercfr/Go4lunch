@@ -15,8 +15,14 @@
     <string name="fb_login_protocol_scheme">fb456038762614418</string>
 
     <!-- BOTTOM NAVIGATION VIEW -->
-    <string name="bottom_navigation_menu_landscape">Landscape</string>
-    <string name="bottom_navigation_menu_logos">Logo</string>
-    <string name="bottom_navigation_menu_android">Android</string>
+    <string name="bottom_navigation_menu_landscape">WorkMates</string>
+    <string name="bottom_navigation_menu_logos">ListView</string>
+    <string name="bottom_navigation_menu_android">MapView</string>
+    <string name="hello">hello</string>
+
+
+    <string name="apiKey">AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw</string>
+
+
 
 </resources>

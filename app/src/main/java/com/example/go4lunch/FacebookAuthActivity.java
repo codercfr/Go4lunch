@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.go4lunch.ui.SecondActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -20,6 +21,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.jetbrains.annotations.NotNull;
 
 public class FacebookAuthActivity extends MainActivity {
 
@@ -36,13 +39,18 @@ public class FacebookAuthActivity extends MainActivity {
 
 
         LoginButton loginButton = findViewById(R.id.facebook_button);
-        loginButton.setReadPermissions("email", "public_profile");
+
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
 
                 handleFacebookAccessToken(loginResult.getAccessToken());
+
+
+                Intent intent = new Intent(FacebookAuthActivity.this, MapsActivity.class);
+                startActivity(intent);
+
             }
 
             @Override
@@ -52,7 +60,7 @@ public class FacebookAuthActivity extends MainActivity {
 
 
             @Override
-            public void onError(FacebookException error) {
+            public void onError(@NotNull FacebookException error) {
 
             }
         });
@@ -69,7 +77,6 @@ public class FacebookAuthActivity extends MainActivity {
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
-
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
