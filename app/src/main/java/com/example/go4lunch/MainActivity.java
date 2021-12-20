@@ -1,30 +1,24 @@
 package com.example.go4lunch;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.login.widget.LoginButton;
-import com.firebase.ui.auth.viewmodel.RequestCodes;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -32,10 +26,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class MainActivity extends AppCompatActivity {
 
     SignInButton btnSign;
-    private static final int RC_SIGN_IN = 123;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     LoginButton facebook_button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,18 +55,6 @@ public class MainActivity extends AppCompatActivity {
                             GoogleSignInAccount account = task.getResult(ApiException.class);
                             assert account != null;
                             firebaseAuthWithGoogle(account.getIdToken());
-
-
-                            // récupérer les datas par firebase
-
-
-                            @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = getApplicationContext()
-                                    .getSharedPreferences("My prefs",MODE_PRIVATE)
-                                    .edit();
-                            editor.putString("username",account.getDisplayName());
-                            editor.putString("usermail",account.getEmail());
-                            editor.putString("userphoto",account.getPhotoUrl().toString());
-
 
                         } catch (ApiException e) {
                             // Google Sign In failed, update UI appropriately
@@ -111,18 +93,15 @@ public class MainActivity extends AppCompatActivity {
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Intent intent = new Intent(MainActivity.this,MapsActivity.class);
-                            startActivity(intent);
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Intent intent = new Intent(MainActivity.this,MapsActivity.class);
+                        startActivity(intent);
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(MainActivity.this,"Authentification Failed",Toast.LENGTH_LONG).show();
-                        }
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(MainActivity.this,"Authentification Failed",Toast.LENGTH_LONG).show();
                     }
                 });
     }
