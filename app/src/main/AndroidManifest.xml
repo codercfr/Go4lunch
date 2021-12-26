@@ -44,9 +44,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ProfilActivity"
-            android:exported="true" />
     </application>
 
 </manifest>

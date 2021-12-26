@@ -6,13 +6,18 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.go4lunch.fragments.HomeFragment;
+import com.example.go4lunch.fragments.MapFragment;
+import com.example.go4lunch.fragments.SavedPlacesFragment;
 import com.example.go4lunch.model.GooglePlaceModel;
 import com.example.go4lunch.model.GoogleResponseModel;
 import com.example.go4lunch.webServices.RetrofitApi;
@@ -22,7 +27,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,10 +39,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
+
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     private GoogleMap mMap;
@@ -47,44 +53,46 @@ public class MapsActivity extends FragmentActivity implements
     private List<GooglePlaceModel> googlePlaceModelList;
     private GoogleMap mGoogleMap;
     private ArrayList<String> userSavedLocationId;
+    private BottomNavigationView bottomNavigationView;
+    private MapFragment mapFragment;
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Retrieve the content view that renders the map.
         setContentView(R.layout.activity_maps);
-        retrofitApi = RetrofitClient.getRetrofitClient().create(RetrofitApi.class);
+        bottomNavigationView = findViewById(R.id.bottom_view);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        assert mapFragment != null;
-        mapFragment.getMapAsync(this);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            switch (item.getItemId()) {
+                case R.id.action_android:
+                    selectedFragment = new MapFragment();
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.constraint_bottom_view, selectedFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    return true;
 
-
-
+                case R.id.action_logo:
+                    selectedFragment = new HomeFragment();
+                    transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.constraint_bottom_view, selectedFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    return true;
+            }
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            assert false;
+            transaction.replace(R.id.content, selectedFragment);
+            transaction.commit();
+            return true;
+        });
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to i<nstall
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    @SuppressLint("MissingPermission")
-    @Override
-    public void onMapReady(@NotNull GoogleMap googleMap) {
-        mMap = googleMap;
-        //mMap.setMyLocationEnabled(true);
-      /*  LatLng paris = new LatLng(48, 2);
-        mMap.addMarker(new MarkerOptions().position(paris).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(paris));*/
-        enableMyLocation();
-    }
+
     private void addMarker(GooglePlaceModel googlePlaceModel, int position) {
 
         MarkerOptions markerOptions = new MarkerOptions()
@@ -96,9 +104,9 @@ public class MapsActivity extends FragmentActivity implements
     }
 
 
-    /**
+   /* *//**
      * Enables the My Location layer if the fine location permission has been granted.
-     */
+     *//*
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -110,20 +118,19 @@ public class MapsActivity extends FragmentActivity implements
             // Permission to access the location is missing. Show rationale and request permission
             ActivityCompat.requestPermissions(this,perm,200);
         }
-    }
+    }*/
 
 
     private void getPlaces(String placeName) {
 
-        if(isLocationPermissionOk) {
+        if (isLocationPermissionOk) {
             String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
                     + currentLocation.getLatitude() + "," + currentLocation.getLongitude()
                     + "&radius=" + radius + "&type=" + placeName + "&key=" +
                     getResources().getString(R.string.apiKey);
 
 
-
-            if (currentLocation != null){
+            if (currentLocation != null) {
 
 
                 retrofitApi.getNearByPlaces(url).enqueue(new Callback<GoogleResponseModel>() {
@@ -149,9 +156,8 @@ public class MapsActivity extends FragmentActivity implements
 
                                     //  googlePlaceAdapter.setGooglePlaceModels(googlePlaceModelList);
 
-                                } else if (response.body().getError() != null) {
-
-                                } else {
+                                }
+                                else {
 
                                     mGoogleMap.clear();
                                     googlePlaceModelList.clear();
@@ -177,7 +183,16 @@ public class MapsActivity extends FragmentActivity implements
                 });
 
 
+            }
+
+        }
 
     }
 
+
+
+    @Override
+    public void onMapReady (@NonNull @NotNull GoogleMap googleMap){
+        mMap = googleMap;
+    }
 }

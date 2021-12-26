@@ -37,4 +37,3 @@ public class ProfilActivity extends AppCompatActivity {
         startActivity(new Intent(ProfilActivity.this, MainActivity.class));
     }
 }
-

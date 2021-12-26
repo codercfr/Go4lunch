@@ -11,7 +11,7 @@ public interface RetrofitApi {
     @GET
     Call<GoogleResponseModel> getNearByPlaces(@Url String url);
 
-    @GET
-    Call<DirectionResponseModel> getDirection(@Url String url);
+    //@GET
+    //Call<DirectionResponseModel> getDirection(@Url String url);
 
 }
