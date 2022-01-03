@@ -30,7 +30,7 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         PlaceItemLayoutBinding binding = PlaceItemLayoutBinding.inflate(LayoutInflater.from(parent.getContext())
         );
-        return new GooglePlaceAdapter.ViewHolder(binding.getRoot());
+        return new ViewHolder(binding);
 
     }
 
@@ -46,14 +46,18 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
 
     @Override
     public int getItemCount() {
-        return 0;
+        if (googlePlaceModels != null)
+            return googlePlaceModels.size();
+        else
+            return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private PlaceItemLayoutBinding binding;
 
-
-        public ViewHolder(@NonNull @NotNull View itemView) {
-            super(itemView);
+        public ViewHolder(@NonNull @NotNull PlaceItemLayoutBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }
