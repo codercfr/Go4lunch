@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
 
     private final Context context;
-
     ArrayList<Article> articleArrayList;
 
     public ArticleAdapter(Context context, ArrayList<Article> articleArrayList) {

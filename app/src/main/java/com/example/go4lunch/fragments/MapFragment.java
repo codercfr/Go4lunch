@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.go4lunch.R;
 import com.example.go4lunch.model.GooglePlaceModel;
@@ -22,6 +24,9 @@ import com.example.go4lunch.model.GoogleResponseModel;
 import com.example.go4lunch.webServices.RetrofitApi;
 import com.example.go4lunch.webServices.RetrofitClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,6 +37,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import org.jetbrains.annotations.NotNull;
@@ -52,10 +58,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private Button btn_find;
     private Marker currentMarker;
     private Location currentLocation;
+    private LocationCallback locationCallback;
+    private LocationRequest locationRequest;
     private int radius = 5000;
     private boolean isLocationPermissionOk;
     private RetrofitApi retrofitApi;
     private List<GooglePlaceModel> googlePlaceModelList;
+    private RecyclerView recyclerView;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
 
@@ -77,6 +86,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
 
         return rootview;
+    }
+    private void setUpLocationUpdate() {
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NotNull LocationResult locationResult) {
+                for (Location location : locationResult.getLocations()) {
+                    Log.d("TAG", "onLocationResult: " + location.getLongitude() + " " + location.getLatitude());
+                }
+
+                super.onLocationResult(locationResult);
+            }
+        };
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+       getCurentLocation();
+
+
     }
 
     private void moveCameraToLocation(Location location) {
@@ -102,23 +134,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void getCurentLocation() {
-        //initialize Task Location
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            Task<Location> task = fusedLocationProviderClient.getLastLocation();
-            task.addOnSuccessListener(location -> {
-                currentLat = location.getLatitude();
-                currrentLong = location.getLongitude();
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(currentLat, currrentLong), 10
-                ));
-            });
+        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            isLocationPermissionOk = false;
+            return;
         }
+
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
+            currentLocation=location;
+            moveCameraToLocation(currentLocation);
+        });
     }
 
     public void getRestaurant(String ResturantName){
+        //remplacer current lat et currentlong pour avoir les bonnes valeurs
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"+"?location="+currentLat+","
                 +currrentLong+"&radius=5000"
                 +"&types=restaurant"
@@ -175,7 +206,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            //getCurentLocation();
+            setUpLocationUpdate();
             getRestaurant("restaurant");
 
         } else {
