@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SavedPlacesFragment">
-
+   >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
-        tools:listitem="@layout/news_item"
-        android:scrollbars="none">
+       >
 
     </androidx.recyclerview.widget.RecyclerView>
 

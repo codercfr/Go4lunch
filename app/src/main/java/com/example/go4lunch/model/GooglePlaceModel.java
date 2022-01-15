@@ -27,6 +27,9 @@ public class GooglePlaceModel {
     @Expose
     private List<Object> obfuscatedType = null;
 
+
+    //la placer dans glide pour l'afficher
+    //get la photo 0
     @SerializedName("photos")
     @Expose
     private List<PhotoModel> photos = null;
@@ -35,7 +38,10 @@ public class GooglePlaceModel {
     @Expose
     private String placeId;
 
+//chercher le lien pour le opening hour
 
+
+    //chercher la methode distanceTo
     @SerializedName("rating")
     @Expose
     private Double rating;
