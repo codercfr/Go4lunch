@@ -2,9 +2,11 @@ package com.example.go4lunch.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.go4lunch.R;
 import com.example.go4lunch.model.GooglePlaceModel;
 
@@ -24,6 +27,7 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
 
     @NonNull
     private  List<GooglePlaceModel> googlePlaceModels;
+    double currentLat = -33.8670522, currrentLong = 151.1957362;
 
 
     public GooglePlaceAdapter(@NotNull List<GooglePlaceModel> googlePlaceModels) {
@@ -38,6 +42,9 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
         return new ViewHolder(view);
     }
 
+
+    // je peux start la nouvelle activité dans l'adapter pour le showactivityRestaurant
+    //récupérer l'id non le détail.
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @NotNull GooglePlaceAdapter.ViewHolder holder, int position) {
@@ -47,6 +54,14 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
             holder.rating.setText(placeModel.getRating().toString());
             holder.open.setText(placeModel.getBusinessStatus());
             getRatingStars(holder,position);
+            getLocationToPlaces(holder,position);
+
+             String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photoreference="
+                + placeModel.getPhotos().get(0).getPhotoReference() + "&sensor=true&key=AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw";
+
+             Glide.with(holder.photoPlaces.getContext())
+                .load(url)
+                .into(holder.photoPlaces);
 
     }
 
@@ -80,6 +95,22 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
             holder.ratingBar.setNumStars(5);
         }
     }
+    private void getLocationToPlaces(GooglePlaceAdapter.ViewHolder holder, int position){
+        GooglePlaceModel placeModel = googlePlaceModels.get(position);
+        Location currentLocation= new Location("currentLocation");
+        currentLocation.setLatitude(currentLat);
+        currentLocation.setLongitude(currrentLong);
+
+        Location newLocation = new Location("newlocation");
+        newLocation.setLatitude(placeModel.getGeometry().getLocation().getLat());
+        newLocation.setLongitude(placeModel.getGeometry().getLocation().getLng());
+
+        float distance = currentLocation.distanceTo(newLocation);
+        String distanceM=String.valueOf(distance);
+        //caster en int et mettre "m"
+        holder.distancePlaces.setText(distanceM);
+
+    }
 
     @Override
     public int getItemCount() {
@@ -89,10 +120,11 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         private  TextView placesName;
         private TextView street_Name;
-        //rating bar widget pour afficher les étoiles
         private TextView rating;
         private TextView open;
         private RatingBar ratingBar;
+        private ImageView photoPlaces;
+        private TextView distancePlaces;
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             placesName=itemView.findViewById(R.id.place_Name);
@@ -100,6 +132,8 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
             rating=itemView.findViewById(R.id.rating);
             open=itemView.findViewById(R.id.open);
             ratingBar=itemView.findViewById(R.id.ratingBar);
+            photoPlaces=itemView.findViewById(R.id.photo_Places);
+            distancePlaces=itemView.findViewById(R.id.distance_places);
         }
     }
 }

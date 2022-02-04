@@ -19,6 +19,10 @@ public class GooglePlaceModel {
     @Expose
     private String icon;
 
+    @SerializedName("photo_reference")
+    @Expose
+    private String photoRef;
+
     @SerializedName("name")
     @Expose
     private String name;
@@ -80,6 +84,8 @@ public class GooglePlaceModel {
     public GeometryModel getGeometry() {
         return geometry;
     }
+
+    public String getPhotoRef(){return photoRef;}
 
     public void setGeometry(GeometryModel geometry) {
         this.geometry = geometry;

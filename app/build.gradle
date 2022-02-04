@@ -14,7 +14,9 @@ android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
-
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "com.example.go4lunch"
         minSdkVersion 22
@@ -51,10 +53,12 @@ android {
 
 dependencies {
 
-
-
+    //DataBinding
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
     // FIREBASE UI
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+
+
 
     // GLIDE
     implementation 'com.github.bumptech.glide:glide:4.12.0'

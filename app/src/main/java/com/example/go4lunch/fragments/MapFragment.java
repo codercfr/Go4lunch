@@ -12,15 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.go4lunch.R;
 import com.example.go4lunch.model.GooglePlaceModel;
-import com.example.go4lunch.model.GoogleResponseModel;
+import com.example.go4lunch.response.GoogleResponseModel;
 import com.example.go4lunch.webServices.RetrofitApi;
 import com.example.go4lunch.webServices.RetrofitClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -37,8 +35,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -213,10 +209,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             ActivityCompat.requestPermissions((Activity) requireContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
-        // enlever le boutton et repalcer la requête pour la map ici.
-        // obtenir la location avec le fusedlocation et lastknownlocation
-
-        //ratin bar pour afficher les étoiles
     }
 
 

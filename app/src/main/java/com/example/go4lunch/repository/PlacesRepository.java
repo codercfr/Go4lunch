@@ -1,11 +1,21 @@
 package com.example.go4lunch.repository;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import android.content.Context;
+import android.util.Log;
 
-import com.example.go4lunch.response.PlacesResponse;
+import androidx.lifecycle.MutableLiveData;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.go4lunch.R;
+import com.example.go4lunch.adapter.GooglePlaceAdapter;
+import com.example.go4lunch.model.GooglePlaceModel;
+import com.example.go4lunch.response.GoogleResponseModel;
 import com.example.go4lunch.webServices.RetrofitApi;
 import com.example.go4lunch.webServices.RetrofitClient;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,33 +24,63 @@ import retrofit2.Response;
 public class PlacesRepository {
 
 
+    private List<GooglePlaceModel> listGooglePlaceModels ;
     private static final String TAG = PlacesRepository.class.getSimpleName();
+    private final GooglePlaceAdapter googlePlaceAdapter = new GooglePlaceAdapter(listGooglePlaceModels);
+    double currentLat = -33.8670522, currrentLong = 151.1957362;
+    private RetrofitApi retrofitApi;
+    private RecyclerView recyclerView;
+    Context context;
+    final MutableLiveData<List<GooglePlaceModel>> googlePlaceModels = new MutableLiveData<>();
 
-    private final RetrofitApi apiRequest;
-
-
-    public PlacesRepository() {
-        this.apiRequest = RetrofitClient.getRetrofitClient().create(RetrofitApi.class);
+    public PlacesRepository(Context applicationContext,RecyclerView recyclerView){
+        context=applicationContext;
+        this.recyclerView=recyclerView;
     }
 
 
-    public LiveData<PlacesResponse> getDashBordNews(){
-        final MutableLiveData<PlacesResponse> data = new MutableLiveData<>();
-        apiRequest.getTopHeadlines()
-                .enqueue(new Callback<PlacesResponse>() {
-                    @Override
-                    public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
-                        if(response.body()!=null)
-                        {
-                            data.setValue(response.body());
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<PlacesResponse> call, Throwable t) {
-                        data.setValue(null);
+
+    public MutableLiveData<List<GooglePlaceModel>>  getRestaurantName(){
+        retrofitApi = RetrofitClient.getRetrofitClient().create(RetrofitApi .class);
+        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"+"?location="+currentLat+","
+                +currrentLong+"&radius=5000"
+                +"&types=restaurant"
+                +"&sensor=false"
+                +"&key="+ "AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw";
+
+        retrofitApi.getNearByPlaces(url).enqueue(new Callback<GoogleResponseModel>() {
+            @Override
+            public void onResponse(Call<GoogleResponseModel> call, Response<GoogleResponseModel> response) {
+                try {
+                    listGooglePlaceModels.clear();
+                    // This loop will go through all the results and add marker on each location.
+                    for (int i = 0; i < Objects.requireNonNull(response.body()).getGooglePlaceModelList().size(); i++) {
+                        //googlePlaceModels.setValue(response.body().getGooglePlaceModelList());
+                        listGooglePlaceModels.add(response.body().getGooglePlaceModelList().get(i));
+                        googlePlaceAdapter.updateTasks(listGooglePlaceModels);
                     }
-                });
-        return data;
+                } catch (Exception e) {
+                    Log.d("onResponse", "There is an error");
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(Call<GoogleResponseModel> call, Throwable t) {
+                Log.d("onFailure", t.toString());
+            }
+        });
+        googlePlaceModels.setValue(listGooglePlaceModels);
+        return googlePlaceModels;
     }
 }
+
+
+//un repository par theme/fonction
+
+
+// viewmodel récupére les données du repository pour ce dont il a besoin
+
+//repository est un singleton
+
+//p3 regarder pour séléctionner dans le reyclerview

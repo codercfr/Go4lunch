@@ -1,21 +1,27 @@
 package com.example.go4lunch.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.ShowRestaurantActivity;
 import com.example.go4lunch.adapter.GooglePlaceAdapter;
 import com.example.go4lunch.model.GooglePlaceModel;
-import com.example.go4lunch.model.GoogleResponseModel;
+import com.example.go4lunch.response.GoogleResponseModel;
+import com.example.go4lunch.view_model.PlacesViewModel;
 import com.example.go4lunch.webServices.RetrofitApi;
 import com.example.go4lunch.webServices.RetrofitClient;
 
@@ -36,7 +42,10 @@ public class HomeFragment extends Fragment {
     private List<GooglePlaceModel> googlePlaceModels = new ArrayList<>();
     private final GooglePlaceAdapter  googlePlaceAdapter = new GooglePlaceAdapter(googlePlaceModels);
     double currentLat = -33.8670522, currrentLong = 151.1957362;
+    float distance=0;
     private RetrofitApi retrofitApi;
+    private PlacesViewModel placesViewModel;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,10 +54,17 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_saved_places, container, false);
         retrofitApi = RetrofitClient.getRetrofitClient().create(RetrofitApi.class);
         recyclerView=rootView.findViewById(R.id.savedRecyclerView);
-        return rootView;
+        //Init of ViewModel
+        placesViewModel= new ViewModelProvider(this).get(PlacesViewModel.class);
+        placesViewModel.getTasks()
+                .observe(getViewLifecycleOwner(), googlePlaceModels -> {
 
+                });
+        return rootView;
     }
 
+    // ouvrir une activité pour les infos du restaurant.
+    //
 
         public void  getRestaurantName(){
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"+"?location="+currentLat+","
@@ -56,6 +72,8 @@ public class HomeFragment extends Fragment {
                 +"&types=restaurant"
                 +"&sensor=false"
                 +"&key="+ getResources().getString(R.string.apiKey);
+
+
 
         retrofitApi.getNearByPlaces(url).enqueue(new Callback<GoogleResponseModel>() {
             @Override
@@ -71,8 +89,6 @@ public class HomeFragment extends Fragment {
                     Log.d("onResponse", "There is an error");
                     e.printStackTrace();
                 }
-
-
             }
 
             @Override
@@ -83,6 +99,13 @@ public class HomeFragment extends Fragment {
     }
 
 
+    /*private void sendata(int position ){
+        Intent i = new Intent(getActivity().getBaseContext(), ShowRestaurantActivity.class);
+        i.putExtra("Name Restaurant")
+
+
+    }*/
+
     @Override
     public void onViewCreated( @NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -90,10 +113,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(googlePlaceAdapter);
         getRestaurantName();
     }
-
-
-//vue de detail.
-// regarder pour place detail
 
 
 }

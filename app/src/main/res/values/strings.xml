@@ -19,6 +19,12 @@
     <string name="bottom_navigation_menu_logos">ListView</string>
     <string name="bottom_navigation_menu_android">MapView</string>
     <string name="hello">hello</string>
+    <!-- NAV RESTAURANT -->
+    <string name="navigation_call">Call</string>
+    <string name="navigation_like">Like</string>
+    <string name="navigation_website">Website</string>
+
+
 
 
     <string name="apiKey">AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw</string>
