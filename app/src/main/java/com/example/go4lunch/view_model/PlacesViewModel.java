@@ -1,28 +1,26 @@
 package com.example.go4lunch.view_model;
 
-import android.content.Context;
-
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.go4lunch.model.GooglePlaceModel;
 import com.example.go4lunch.repository.PlacesRepository;
-import com.example.go4lunch.response.GoogleResponseModel;
 
 import java.util.List;
 
 public class PlacesViewModel extends ViewModel {
+    //renomer les ViewModel pour avoir le même nom que le frag.
+    // le viewmodel factory sert si le viewmodel à besoin de paramètre.
 
-    PlacesRepository repository;
+    private static final  PlacesRepository repository = new PlacesRepository();
 
-    public PlacesViewModel(Context context, RecyclerView recyclerView){
-        repository=new PlacesRepository(context,recyclerView);
 
+    public LiveData<List<GooglePlaceModel>> getTasks() {
+        return repository.getRestaurantName();
     }
 
-    public MutableLiveData<List<GooglePlaceModel>> getTasks() {
-        return repository.getRestaurantName();
+    public static PlacesRepository getRepository(){
+        return repository;
     }
 
 

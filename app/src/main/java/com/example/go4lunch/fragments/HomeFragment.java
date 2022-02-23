@@ -56,10 +56,6 @@ public class HomeFragment extends Fragment {
         recyclerView=rootView.findViewById(R.id.savedRecyclerView);
         //Init of ViewModel
         placesViewModel= new ViewModelProvider(this).get(PlacesViewModel.class);
-        placesViewModel.getTasks()
-                .observe(getViewLifecycleOwner(), googlePlaceModels -> {
-
-                });
         return rootView;
     }
 
@@ -99,19 +95,20 @@ public class HomeFragment extends Fragment {
     }
 
 
-    /*private void sendata(int position ){
-        Intent i = new Intent(getActivity().getBaseContext(), ShowRestaurantActivity.class);
-        i.putExtra("Name Restaurant")
-
-
-    }*/
-
     @Override
     public void onViewCreated( @NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(googlePlaceAdapter);
-        getRestaurantName();
+        //creat method pour le viewmodel
+        placesViewModel.getTasks()
+                .observe(getViewLifecycleOwner(), googlePlaceModels -> {
+                    //
+                    this.googlePlaceModels.clear();
+                    this.googlePlaceModels.addAll(googlePlaceModels);
+                    googlePlaceAdapter.notifyDataSetChanged();
+
+                });
     }
 
 

@@ -14,11 +14,15 @@ import android.widget.Button;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.go4lunch.R;
 import com.example.go4lunch.model.GooglePlaceModel;
 import com.example.go4lunch.response.GoogleResponseModel;
+import com.example.go4lunch.view_model.MapsViewModel;
+import com.example.go4lunch.view_model.PlacesViewModel;
 import com.example.go4lunch.webServices.RetrofitApi;
 import com.example.go4lunch.webServices.RetrofitClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -51,7 +55,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     private GoogleMap mMap;
     double currentLat = -33.8670522, currrentLong = 151.1957362;
-    private Button btn_find;
     private Marker currentMarker;
     private Location currentLocation;
     private LocationCallback locationCallback;
@@ -60,8 +63,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private boolean isLocationPermissionOk;
     private RetrofitApi retrofitApi;
     private List<GooglePlaceModel> googlePlaceModelList;
-    private RecyclerView recyclerView;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private MapsViewModel mapsViewModel;
+
 
 
     @Override
@@ -75,12 +79,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
-
-
         //initialize fusef location provider client
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
-
-
+        mapsViewModel= new ViewModelProvider(this).get(MapsViewModel.class);
         return rootview;
     }
     private void setUpLocationUpdate() {
@@ -141,58 +142,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
             currentLocation=location;
             moveCameraToLocation(currentLocation);
+            //lancé la requete réseau.
+            //récupérer la location et lancé l'observer livedata
         });
     }
-
-    public void getRestaurant(String ResturantName){
-        //remplacer current lat et currentlong pour avoir les bonnes valeurs
-        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"+"?location="+currentLat+","
-                +currrentLong+"&radius=5000"
-                +"&types=restaurant"
-                +"&sensor=false"
-                +"&key="+ getResources().getString(R.string.apiKey);
-
-
-        retrofitApi.getNearByPlaces(url).enqueue(new Callback<GoogleResponseModel>() {
-            @Override
-            public void onResponse(Call<GoogleResponseModel> call, Response<GoogleResponseModel> response) {
-                try {
-                    mMap.clear();
-                    googlePlaceModelList.clear();
-                    // This loop will go through all the results and add marker on each location.
-                    for (int i = 0; i < Objects.requireNonNull(response.body()).getGooglePlaceModelList().size(); i++) {
-                        Double lat = response.body().getGooglePlaceModelList().get(i).getGeometry().getLocation().getLat();
-                        Double lng = response.body().getGooglePlaceModelList().get(i).getGeometry().getLocation().getLng();
-                        String placeName = response.body().getGooglePlaceModelList().get(i).getName();
-                        String vicinity = response.body().getGooglePlaceModelList().get(i).getVicinity();
-                        MarkerOptions markerOptions = new MarkerOptions();
-                        LatLng latLng = new LatLng(lat, lng);
-                        // Position of Marker on Map
-                        markerOptions.position(latLng);
-                        // Adding Title to the Marker
-                        markerOptions.title(placeName + " : " + vicinity);
-                        // Adding Marker to the Camera.
-                        Marker m = mMap.addMarker(markerOptions);
-                        // Adding colour to the marker
-                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                        // move map camera
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-                    }
-                } catch (Exception e) {
-                    Log.d("onResponse", "There is an error");
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<GoogleResponseModel> call, Throwable t) {
-                Log.d("onFailure", t.toString());
-            }
-        });
-        }
-
 
     @SuppressLint("MissingPermission")
     @Override
@@ -202,9 +155,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            setUpLocationUpdate();
-            getRestaurant("restaurant");
-
+            //le remettre en place une fois que l'obersable est crée.
+            //setUpLocationUpdate();
         } else {
             ActivityCompat.requestPermissions((Activity) requireContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }

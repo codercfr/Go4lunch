@@ -24,21 +24,14 @@ import retrofit2.Response;
 public class PlacesRepository {
 
 
-    private List<GooglePlaceModel> listGooglePlaceModels ;
+    private List<GooglePlaceModel> listGooglePlaceModels = new ArrayList<>() ;
     private static final String TAG = PlacesRepository.class.getSimpleName();
-    private final GooglePlaceAdapter googlePlaceAdapter = new GooglePlaceAdapter(listGooglePlaceModels);
     double currentLat = -33.8670522, currrentLong = 151.1957362;
     private RetrofitApi retrofitApi;
-    private RecyclerView recyclerView;
-    Context context;
     final MutableLiveData<List<GooglePlaceModel>> googlePlaceModels = new MutableLiveData<>();
 
-    public PlacesRepository(Context applicationContext,RecyclerView recyclerView){
-        context=applicationContext;
-        this.recyclerView=recyclerView;
+    public PlacesRepository() {
     }
-
-
 
 
     public MutableLiveData<List<GooglePlaceModel>>  getRestaurantName(){
@@ -53,13 +46,13 @@ public class PlacesRepository {
             @Override
             public void onResponse(Call<GoogleResponseModel> call, Response<GoogleResponseModel> response) {
                 try {
-                    listGooglePlaceModels.clear();
-                    // This loop will go through all the results and add marker on each location.
-                    for (int i = 0; i < Objects.requireNonNull(response.body()).getGooglePlaceModelList().size(); i++) {
-                        //googlePlaceModels.setValue(response.body().getGooglePlaceModelList());
-                        listGooglePlaceModels.add(response.body().getGooglePlaceModelList().get(i));
-                        googlePlaceAdapter.updateTasks(listGooglePlaceModels);
-                    }
+                        listGooglePlaceModels.clear();
+                        // This loop will go through all the results and add marker on each location.
+                        for (int i = 0; i < Objects.requireNonNull(response.body()).getGooglePlaceModelList().size(); i++) {
+                            //googlePlaceModels.setValue(response.body().getGooglePlaceModelList());
+                            listGooglePlaceModels.add(response.body().getGooglePlaceModelList().get(i));
+                        }
+                    googlePlaceModels.setValue(listGooglePlaceModels);
                 } catch (Exception e) {
                     Log.d("onResponse", "There is an error");
                     e.printStackTrace();
@@ -70,7 +63,7 @@ public class PlacesRepository {
                 Log.d("onFailure", t.toString());
             }
         });
-        googlePlaceModels.setValue(listGooglePlaceModels);
+        //setting the value of MutableLivedata
         return googlePlaceModels;
     }
 }
