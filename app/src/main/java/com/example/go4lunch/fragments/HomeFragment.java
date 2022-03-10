@@ -24,6 +24,12 @@ import com.example.go4lunch.response.GoogleResponseModel;
 import com.example.go4lunch.view_model.PlacesViewModel;
 import com.example.go4lunch.webServices.RetrofitApi;
 import com.example.go4lunch.webServices.RetrofitClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,8 +47,6 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<GooglePlaceModel> googlePlaceModels = new ArrayList<>();
     private final GooglePlaceAdapter  googlePlaceAdapter = new GooglePlaceAdapter(googlePlaceModels);
-    double currentLat = -33.8670522, currrentLong = 151.1957362;
-    float distance=0;
     private RetrofitApi retrofitApi;
     private PlacesViewModel placesViewModel;
 
@@ -58,42 +62,6 @@ public class HomeFragment extends Fragment {
         placesViewModel= new ViewModelProvider(this).get(PlacesViewModel.class);
         return rootView;
     }
-
-    // ouvrir une activité pour les infos du restaurant.
-    //
-
-        public void  getRestaurantName(){
-        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"+"?location="+currentLat+","
-                +currrentLong+"&radius=5000"
-                +"&types=restaurant"
-                +"&sensor=false"
-                +"&key="+ getResources().getString(R.string.apiKey);
-
-
-
-        retrofitApi.getNearByPlaces(url).enqueue(new Callback<GoogleResponseModel>() {
-            @Override
-            public void onResponse(Call<GoogleResponseModel> call, Response<GoogleResponseModel> response) {
-                try {
-                    googlePlaceModels.clear();
-                    // This loop will go through all the results and add marker on each location.
-                    for (int i = 0; i < Objects.requireNonNull(response.body()).getGooglePlaceModelList().size(); i++) {
-                        googlePlaceModels.add(response.body().getGooglePlaceModelList().get(i));
-                        googlePlaceAdapter.updateTasks(googlePlaceModels);
-                    }
-                } catch (Exception e) {
-                    Log.d("onResponse", "There is an error");
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GoogleResponseModel> call, Throwable t) {
-                Log.d("onFailure", t.toString());
-            }
-        });
-    }
-
 
     @Override
     public void onViewCreated( @NotNull View view, @Nullable Bundle savedInstanceState) {

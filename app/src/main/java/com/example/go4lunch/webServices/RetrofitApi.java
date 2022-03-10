@@ -10,4 +10,7 @@ public interface RetrofitApi {
 
     @GET
     Call<GoogleResponseModel> getNearByPlaces(@Url String url);
+
+    @GET
+    Call<GoogleResponseModel> getResaurantIdRetrofit(@Url String url );
 }

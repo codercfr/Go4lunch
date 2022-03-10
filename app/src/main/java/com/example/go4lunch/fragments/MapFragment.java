@@ -54,7 +54,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     private GoogleMap mMap;
-    double currentLat = -33.8670522, currrentLong = 151.1957362;
     private Marker currentMarker;
     private Location currentLocation;
     private LocationCallback locationCallback;
@@ -110,6 +109,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     private void moveCameraToLocation(Location location) {
 
+        //zoom +
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new
                 LatLng(location.getLatitude(), location.getLongitude()), 17);
 
@@ -144,7 +144,45 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             moveCameraToLocation(currentLocation);
             //lancé la requete réseau.
             //récupérer la location et lancé l'observer livedata
+            mapsViewModel.getListRestaurant()
+                    .observe(getViewLifecycleOwner(),googlePlaceModels -> {
+                        this.googlePlaceModelList.clear();
+                        this.googlePlaceModelList.addAll(googlePlaceModels);
+                        getRestaurant();
+                    });
+
         });
+    }
+
+    public void getRestaurant(){
+        try {
+            mMap.clear();
+            // pas de getValue sur LiveData
+            // This loop will go through all the results and add marker on each location.
+            for (int i = 0; i < googlePlaceModelList.size(); i++) {
+                Double lat = googlePlaceModelList.get(i).getGeometry().getLocation().getLat();
+                Double lng = googlePlaceModelList.get(i).getGeometry().getLocation().getLng();
+                String placeName = googlePlaceModelList.get(i).getName();
+                String vicinity = googlePlaceModelList.get(i).getVicinity();
+                MarkerOptions markerOptions = new MarkerOptions();
+                LatLng latLng = new LatLng(lat, lng);
+                // Position of Marker on Map
+                markerOptions.position(latLng);
+                // Adding Title to the Marker
+                markerOptions.title(placeName + " : " + vicinity);
+                // Adding Marker to the Camera.
+                Marker m = mMap.addMarker(markerOptions);
+                // Adding colour to the marker
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                // move map camera
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+            }
+        } catch (Exception e) {
+            Log.d("onResponse", "There is an error");
+            e.printStackTrace();
+        }
+
     }
 
     @SuppressLint("MissingPermission")
@@ -156,7 +194,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             //le remettre en place une fois que l'obersable est crée.
-            //setUpLocationUpdate();
+            setUpLocationUpdate();
         } else {
             ActivityCompat.requestPermissions((Activity) requireContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }

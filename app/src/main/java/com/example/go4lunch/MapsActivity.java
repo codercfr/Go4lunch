@@ -44,6 +44,7 @@ public class MapsActivity extends FragmentActivity implements
                     transaction.addToBackStack(null);
                     transaction.commit();
                     return true;
+
             }
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             assert false;

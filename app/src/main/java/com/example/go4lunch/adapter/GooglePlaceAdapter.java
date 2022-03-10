@@ -2,6 +2,7 @@ package com.example.go4lunch.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +12,14 @@ import android.widget.RatingBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.R;
+import com.example.go4lunch.ShowRestaurantActivity;
+import com.example.go4lunch.fragments.SavedPlacesFragment;
 import com.example.go4lunch.model.GooglePlaceModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +32,8 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
     @NonNull
     private  List<GooglePlaceModel> googlePlaceModels;
     double currentLat = -33.8670522, currrentLong = 151.1957362;
-
+    private Context mContext;
+    int selected_position = 0;
 
     public GooglePlaceAdapter(@NotNull List<GooglePlaceModel> googlePlaceModels) {
         this.googlePlaceModels = googlePlaceModels;
@@ -48,7 +53,8 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @NotNull GooglePlaceAdapter.ViewHolder holder, int position) {
-            GooglePlaceModel placeModel = googlePlaceModels.get(position);
+        holder.itemView.setSelected(selected_position == position);
+        GooglePlaceModel placeModel = googlePlaceModels.get(position);
             holder.placesName.setText(placeModel.getName());
             holder.street_Name.setText(placeModel.getVicinity());
             holder.rating.setText(placeModel.getRating().toString());
@@ -63,6 +69,16 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
                 .load(url)
                 .into(holder.photoPlaces);
 
+             //clicker sur tout le itemview
+            // toutes views a un context.
+            // récupérer le place id.
+            // la recherche faudra le placeDetails
+
+             holder.itemView.setOnClickListener(view -> {
+                 Intent intent = new Intent(view.getContext(),ShowRestaurantActivity.class);
+                 intent.putExtra("ID",placeModel.getPlaceId());
+                 view.getContext().startActivity(intent);
+             });
     }
 
    public void updateTasks(@NonNull  List<GooglePlaceModel> places) {
@@ -117,7 +133,7 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
         return googlePlaceModels.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private  TextView placesName;
         private TextView street_Name;
         private TextView rating;
@@ -127,6 +143,7 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
         private TextView distancePlaces;
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             placesName=itemView.findViewById(R.id.place_Name);
             street_Name=itemView.findViewById(R.id.street_Name);
             rating=itemView.findViewById(R.id.rating);
@@ -134,6 +151,16 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
             ratingBar=itemView.findViewById(R.id.ratingBar);
             photoPlaces=itemView.findViewById(R.id.photo_Places);
             distancePlaces=itemView.findViewById(R.id.distance_places);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+
+            // Updating old as well as new positions
+            notifyItemChanged(selected_position);
+            selected_position = getAdapterPosition();
+            notifyItemChanged(selected_position);
         }
     }
 }

@@ -4,13 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     SignInButton btnSign;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
-    LoginButton facebook_button;
+    Button facebook_button;
 
 
     @Override
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             someActivityResultLauncher.launch(signInIntent);
         });
-
+            //Peut etre pas le bon boutton
             facebook_button.setOnClickListener(v->{
                Intent intent = new Intent(MainActivity.this,FacebookAuthActivity.class);
                startActivity(intent);
