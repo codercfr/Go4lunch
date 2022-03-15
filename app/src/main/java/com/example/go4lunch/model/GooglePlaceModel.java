@@ -15,6 +15,7 @@ public class GooglePlaceModel {
     @Expose
     private GeometryModel geometry;
 
+
     @SerializedName("icon")
     @Expose
     private String icon;

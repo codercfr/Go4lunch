@@ -1,21 +1,45 @@
 package com.example.go4lunch.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class SavedPlaceModel {
-    String name, address, placeId;
-    int totalRating;
-    Double rating, lat, lng;
+
+    @SerializedName("name")
+    @Expose
+    private String name;
+
+    @SerializedName("photos")
+    @Expose
+    private List<PhotoModel> photos = null;
+
+    @SerializedName("place_id")
+    @Expose
+    private String placeId;
+
+    @SerializedName("geometry")
+    @Expose
+    private GeometryModel geometry;
+
+    private String  address;
+
+
+    @SerializedName("rating")
+    @Expose
+    private Double rating;
+
+    @SerializedName("international_phone_number")
+    @Expose
+    private String phoneNumber;
+
+    @SerializedName("vicinity")
+    @Expose
+    private String vicinity;
+
 
     public SavedPlaceModel() {
-    }
-
-    public SavedPlaceModel(String name, String address, String placeId, Double rating, int totalRating, Double lat, Double lng) {
-        this.name = name;
-        this.address = address;
-        this.placeId = placeId;
-        this.rating = rating;
-        this.totalRating = totalRating;
-        this.lat = lat;
-        this.lng = lng;
     }
 
     public String getName() {
@@ -34,13 +58,6 @@ public class SavedPlaceModel {
         this.address = address;
     }
 
-    public String getPlaceId() {
-        return placeId;
-    }
-
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
-    }
 
     public Double getRating() {
         return rating;
@@ -50,27 +67,44 @@ public class SavedPlaceModel {
         this.rating = rating;
     }
 
-    public int getTotalRating() {
-        return totalRating;
+
+    public String getVicinity() {
+        return vicinity;
     }
 
-    public void setTotalRating(int totalRating) {
-        this.totalRating = totalRating;
+    public void setVicinity(String vicinity) {
+        this.vicinity = vicinity;
     }
 
-    public Double getLat() {
-        return lat;
+    public void setPhotos(List<PhotoModel> photos) {
+        this.photos = photos;
     }
 
-    public void setLat(Double lat) {
-        this.lat = lat;
+    public List<PhotoModel> getPhotos() {
+        return photos;
     }
 
-    public Double getLng() {
-        return lng;
+    public String getPlaceId() {
+        return placeId;
     }
 
-    public void setLng(Double lng) {
-        this.lng = lng;
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public GeometryModel getGeometry() {
+        return geometry;
+    }
+
+    public void setGeometry(GeometryModel geometry) {
+        this.geometry = geometry;
     }
 }

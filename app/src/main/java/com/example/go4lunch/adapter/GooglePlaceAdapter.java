@@ -77,7 +77,12 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
              holder.itemView.setOnClickListener(view -> {
                  Intent intent = new Intent(view.getContext(),ShowRestaurantActivity.class);
                  intent.putExtra("ID",placeModel.getPlaceId());
-                 view.getContext().startActivity(intent);
+                 try {
+                     view.getContext().startActivity(intent);
+                 }
+                 catch (Exception exception){
+                     exception=exception;
+                 }
              });
     }
 

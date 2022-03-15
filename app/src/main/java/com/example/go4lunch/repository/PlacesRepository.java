@@ -23,16 +23,13 @@ import retrofit2.Response;
 
 public class PlacesRepository {
 
-
     private List<GooglePlaceModel> listGooglePlaceModels = new ArrayList<>() ;
-    private static final String TAG = PlacesRepository.class.getSimpleName();
     double currentLat = -33.8670522, currrentLong = 151.1957362;
     private RetrofitApi retrofitApi;
     final MutableLiveData<List<GooglePlaceModel>> googlePlaceModels = new MutableLiveData<>();
 
     public PlacesRepository() {
     }
-
 
     public MutableLiveData<List<GooglePlaceModel>>  getRestaurantName(){
         retrofitApi = RetrofitClient.getRetrofitClient().create(RetrofitApi .class);

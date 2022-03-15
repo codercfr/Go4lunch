@@ -27,6 +27,7 @@ public class GoogleResponseModel {
         return googlePlaceModelList;
     }
 
+
     public void setGooglePlaceModelList(List<GooglePlaceModel> googlePlaceModelList) {
         this.googlePlaceModelList = googlePlaceModelList;
     }
