@@ -1,12 +1,13 @@
 package com.example.go4lunch.view_model;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.go4lunch.model.SavedPlaceModel;
 import com.example.go4lunch.repository.PlaceDetailsRepository;
 import com.example.go4lunch.response.SavedPlaceResponseModel;
 
-public class RestaurantViewModel {
+public class RestaurantViewModel extends ViewModel {
 
 
 

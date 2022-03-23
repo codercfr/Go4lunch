@@ -23,8 +23,10 @@ public class SavedPlaceModel {
     @Expose
     private GeometryModel geometry;
 
-    private String  address;
 
+    @SerializedName("formatted_address")
+    @Expose
+    private String  address;
 
     @SerializedName("rating")
     @Expose
@@ -38,6 +40,17 @@ public class SavedPlaceModel {
     @Expose
     private String vicinity;
 
+    @SerializedName("website")
+    @Expose
+    private String website;
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 
     public SavedPlaceModel() {
     }

@@ -62,13 +62,16 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
             getRatingStars(holder,position);
             getLocationToPlaces(holder,position);
 
+            try {
              String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photoreference="
                 + placeModel.getPhotos().get(0).getPhotoReference() + "&sensor=true&key=AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw";
 
              Glide.with(holder.photoPlaces.getContext())
                 .load(url)
                 .into(holder.photoPlaces);
+            }catch (Exception exception){
 
+            }
              //clicker sur tout le itemview
             // toutes views a un context.
             // récupérer le place id.

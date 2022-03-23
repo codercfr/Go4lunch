@@ -16,84 +16,155 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_choices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="336dp"
+        android:layout_marginTop="264dp"
+        android:enabled="true"
+        android:src="@drawable/add_choices"
+        app:backgroundTint="#FF6F00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/restaurantname"
         android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.015"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_restaurantimg" />
-
-    <RatingBar
-        android:id="@+id/ratingBarSelectedR"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="308dp"
-        android:numStars="5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/restaurantname"
-        app:layout_constraintTop_toBottomOf="@+id/id_restaurantimg"
-        app:layout_constraintVertical_bias="0.063" />
 
     <TextView
         android:id="@+id/street_NameSelectedR"
         android:layout_width="100dp"
         android:layout_height="0dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="224dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="244dp"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/restaurantname" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/foodType"
         android:layout_width="45dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restaurantname" />
+        app:layout_constraintTop_toBottomOf="@+id/restaurantname"
+        app:layout_constraintVertical_bias="0.93" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="102dp"
+        android:layout_marginTop="64dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/ratingBarSelectedR"
+        tools:layout_editor_absoluteX="4dp">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_restaurants"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:menu="@menu/menu_restaurant">
+        <ImageView
+            android:id="@+id/action_call"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/icon_call"
+            android:tint="#F57F17" />
 
-        </com.google.android.material.bottomnavigation.BottomNavigationView>
+        <ImageView
+            android:id="@+id/action_like"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginEnd="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/star_icon"
+            android:tint="#F57F17" />
+
+        <ImageView
+            android:id="@+id/action_website"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:clickable="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:src="@drawable/icon_web"
+            android:tint="#F57F17" />
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="12dp"
+        android:text="CALL"
+        android:textColor="@color/quantum_orange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="12dp"
+        android:text="LIKE"
+        android:textColor="@color/quantum_orange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="264dp"
+        android:layout_marginTop="12dp"
+        android:text="WEBSITE"
+        android:textColor="@color/quantum_orange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:layout_marginTop="44dp"
         android:orientation="horizontal"
-        tools:layout_editor_absoluteX="-1dp" >
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:layout_editor_absoluteX="4dp">
 
         <ImageView
             android:id="@+id/img_restaurant_user"
             android:layout_width="50dp"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp" />
+
         <TextView
             android:id="@+id/name_User"
             android:layout_width="wrap_content"
             android:layout_height="15dp"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
     </LinearLayout>
+
+    <RatingBar
+        android:id="@+id/ratingBarSelectedR"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:numStars="5"
+        android:tint="#F57F17"
+        app:layout_constraintStart_toEndOf="@+id/restaurantname"
+        app:layout_constraintTop_toBottomOf="@+id/id_restaurantimg" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

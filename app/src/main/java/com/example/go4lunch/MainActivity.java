@@ -3,6 +3,7 @@ package com.example.go4lunch;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.go4lunch.model.Users;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,6 +24,10 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     Button facebook_button;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference databaseReference;
+    private Users user;
+
 
 
     @Override
@@ -39,15 +49,14 @@ public class MainActivity extends AppCompatActivity {
         facebook_button= findViewById(R.id.facebook_button);
         googleSignIn();
         mAuth = FirebaseAuth.getInstance();
-
+        mDatabase=FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
+        databaseReference= mDatabase.getReference("Users");
 
         ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-
                     // Le resultat est un résultCanceled
                     if (result.getResultCode() == Activity.RESULT_OK) {
-
                         Intent data = result.getData();
                         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                         try {
@@ -55,14 +64,23 @@ public class MainActivity extends AppCompatActivity {
                             GoogleSignInAccount account = task.getResult(ApiException.class);
                             assert account != null;
                             firebaseAuthWithGoogle(account.getIdToken());
+                            try {
+                                //Add the informations to Firebase.
+                                //user=new Users(account.getId(),account.getFamilyName());
+                                user=new Users();
+                                user.setUid(account.getId());
+                                user.setUsername(account.getGivenName());
+                                databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                                        .setValue(user);
+                            }catch (Exception e){
+                                Toast.makeText(this,"NOP",Toast.LENGTH_LONG);
+                            }
+
 
                         } catch (ApiException e) {
                             // Google Sign In failed, update UI appropriately
                             Toast.makeText(MainActivity.this,"Authentification Failed"+e.getMessage(),Toast.LENGTH_LONG).show();
                         }
-
-
-
 
                     }
                 });
@@ -87,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
         if (user != null){
             startActivity(new Intent(getApplicationContext(),MapsActivity.class));
         }
+    }
+
+    private void addDataToFireBase(String id, String name){
+
     }
 
 
