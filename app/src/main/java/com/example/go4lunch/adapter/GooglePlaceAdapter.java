@@ -9,22 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.R;
 import com.example.go4lunch.ShowRestaurantActivity;
-import com.example.go4lunch.fragments.SavedPlacesFragment;
 import com.example.go4lunch.model.GooglePlaceModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.ViewHolder> {
@@ -32,7 +28,6 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
     @NonNull
     private  List<GooglePlaceModel> googlePlaceModels;
     double currentLat = -33.8670522, currrentLong = 151.1957362;
-    private Context mContext;
     int selected_position = 0;
 
     public GooglePlaceAdapter(@NotNull List<GooglePlaceModel> googlePlaceModels) {
@@ -69,8 +64,8 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
              Glide.with(holder.photoPlaces.getContext())
                 .load(url)
                 .into(holder.photoPlaces);
-            }catch (Exception exception){
-
+            }catch (Exception exception) {
+                exception.printStackTrace();
             }
              //clicker sur tout le itemview
             // toutes views a un context.
@@ -84,15 +79,11 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
                      view.getContext().startActivity(intent);
                  }
                  catch (Exception exception){
-                     exception=exception;
+                     exception.printStackTrace();
                  }
              });
     }
 
-   public void updateTasks(@NonNull  List<GooglePlaceModel> places) {
-        this.googlePlaceModels = places;
-        notifyDataSetChanged();
-    }
 
     @SuppressLint("SetTextI18n")
     private void getRatingStars(GooglePlaceAdapter.ViewHolder holder, int position){
@@ -142,7 +133,7 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private  TextView placesName;
+        private TextView placesName;
         private TextView street_Name;
         private TextView rating;
         private TextView open;
@@ -164,7 +155,6 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
         @Override
         public void onClick(View view) {
             if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
-
             // Updating old as well as new positions
             notifyItemChanged(selected_position);
             selected_position = getAdapterPosition();

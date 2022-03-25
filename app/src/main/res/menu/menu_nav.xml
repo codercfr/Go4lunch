@@ -15,7 +15,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     android:title="@string/bottom_navigation_menu_logos"
     app:showAsAction="ifRoom" />
 <item
-    android:id="@+id/action_landscape"
+    android:id="@+id/coworkerList"
     android:enabled="true"
     android:icon="@drawable/coworker"
     android:title="@string/bottom_navigation_menu_landscape"

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.go4lunch.fragments.CoworkerFragment;
 import com.example.go4lunch.fragments.HomeFragment;
 import com.example.go4lunch.fragments.MapFragment;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,6 +42,14 @@ public class MapsActivity extends FragmentActivity implements
                     selectedFragment = new HomeFragment();
                     transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.constraint_bottom_view, selectedFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    return true;
+
+                case R.id.coworkerList:
+                    selectedFragment = new CoworkerFragment();
+                    transaction= getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.constraint_bottom_view,selectedFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
                     return true;

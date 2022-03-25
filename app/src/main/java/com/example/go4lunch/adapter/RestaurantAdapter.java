@@ -10,26 +10,49 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.model.Users;
+import com.firebase.ui.auth.data.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
+
+    private FirebaseUser currentFirbaseUser;
+    private Users userRestaurant;
+    private DatabaseReference databaseReference;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
+    private List<Users> usersListRestaurant = new ArrayList<>();
 
     @NonNull
     @Override
     public RestaurantAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_showrestaurant,parent,false);
+        //chager la vue crée un layout que pour le RecyclerView et donc crée un frag.
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.choosen_restaurant_layout,parent,false);
         return new ViewHolder(view);
+    }
+
+    public RestaurantAdapter(List<Users> usersList){
+        this.usersListRestaurant= usersList;
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull RestaurantAdapter.ViewHolder holder, int position) {
-
+        Users user=usersListRestaurant.get(position) ;
+        holder.nameUser.setText(user.getName());
+        // rajouter la photo quand ca fonctionne
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return usersListRestaurant.size();
     }
 
 

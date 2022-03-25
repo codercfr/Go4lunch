@@ -1,36 +1,38 @@
 package com.example.go4lunch;
 
-import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.go4lunch.adapter.RestaurantAdapter;
 import com.example.go4lunch.model.SavedPlaceModel;
 import com.example.go4lunch.model.Users;
 import com.example.go4lunch.view_model.RestaurantViewModel;
-import com.example.go4lunch.webServices.RetrofitApi;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class ShowRestaurantActivity extends AppCompatActivity {
@@ -49,7 +51,9 @@ public class ShowRestaurantActivity extends AppCompatActivity {
     private SavedPlaceModel savedPlaceModel = new SavedPlaceModel();
     private FloatingActionButton restaurantForLunch;
     private FirebaseUser currentFirbaseUser;
-
+    private List<Users> usersList= new ArrayList<>();
+    //S'occuper de la liste renvoyer dans l'adapteur du RecyclerView
+    private RestaurantAdapter restaurantAdapter = new RestaurantAdapter(usersList);
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,11 @@ public class ShowRestaurantActivity extends AppCompatActivity {
         likeButton=findViewById(R.id.action_like);
         websiteButton=findViewById(R.id.action_website);
         restaurantForLunch=findViewById(R.id.add_choices);
+        //crée un frag pour le faire marcher.
+   /*     RecyclerView recyclerView =(RecyclerView) findViewById(R.id.show_restaurant_recyclerview);
+        //recycler vide pour l'instant.
+        recyclerView.setAdapter(restaurantAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));*/
         mAuth = FirebaseAuth.getInstance();
         mDatabase=FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
         databaseReference= mDatabase.getReference("Users");
@@ -73,7 +82,6 @@ public class ShowRestaurantActivity extends AppCompatActivity {
                     this.savedPlaceModel=savedPlaceModel;
                     getRestaurantId();
                 });
-
         callButton.setOnClickListener(view -> {
             Intent callIntent = new Intent(Intent.ACTION_DIAL);
             callIntent.setData(Uri.parse("tel:"+savedPlaceModel.getPhoneNumber()));
@@ -92,9 +100,10 @@ public class ShowRestaurantActivity extends AppCompatActivity {
                         .child(currentFirbaseUser.getUid())
                         .setValue(user);
             }catch (Exception e){
-                Toast.makeText(this,"no entry into LikeList",Toast.LENGTH_LONG);
+                Toast.makeText(this,"no entry into LikeList",Toast.LENGTH_LONG).show();
             }
         });
+
 
         websiteButton.setOnClickListener(view -> {
             String url = savedPlaceModel.getWebsite();
@@ -103,6 +112,10 @@ public class ShowRestaurantActivity extends AppCompatActivity {
             startActivity(i);
         });
 
+        restaurantForLunch.setOnClickListener(view -> {
+            usersList.add(user);
+            restaurantAdapter.notifyDataSetChanged();
+        });
         // oublier le type de restaurant pas demandé.
         // pour les likes ajouter dans la liste des likes de la personne
         //enregistrer sur firebase.
@@ -110,14 +123,23 @@ public class ShowRestaurantActivity extends AppCompatActivity {
 
     }
 
-    // doit faire une requete on on passe le place id regarder la requete placedetail 
+
+    @Nullable
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public View onCreateView(@NonNull @NotNull String name, @NonNull @NotNull Context context, @NonNull @NotNull AttributeSet attrs) {
+        return super.onCreateView(name, context, attrs);
+
+    }
+
+    // doit faire une requete on on passe le place id regarder la requete placedetail
     private void receiveData() {
         Intent i = getIntent();
         String name = i.getStringExtra("ID");
         placeId = name;
     }
 
-    private void getStarsRestaurant(SavedPlaceModel savedPlaceModel){
+    private int getStarsRestaurant(SavedPlaceModel savedPlaceModel){
         double rating = savedPlaceModel.getRating();
         int i = (int)rating;
         switch (i){
@@ -140,17 +162,16 @@ public class ShowRestaurantActivity extends AppCompatActivity {
                 rtnRestaurant.setNumStars(5);
         }
         // return int du restaurant
+        return i;
     }
-
-
 
     public void getRestaurantId() {
 
         restaurantName.setText(savedPlaceModel.getName());
         streetRestaurantName.setText(savedPlaceModel.getAddress());
         // reprendre le int du restraunt et le set dans la méthode setNumstars.
-        rtnRestaurant.setNumStars(savedPlaceModel.getRating().intValue());
-        //getStarsRestaurant(savedPlaceModel);
+        //rtnRestaurant.setNumStars(savedPlaceModel.getRating().intValue());
+        getStarsRestaurant(savedPlaceModel);
         String urlPhoto = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photoreference="
                 + savedPlaceModel.getPhotos().get(0).getPhotoReference() + "&sensor=true&key=AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw";
         Glide.with(restaurantView.getContext())
