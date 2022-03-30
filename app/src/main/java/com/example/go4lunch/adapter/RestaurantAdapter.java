@@ -1,5 +1,6 @@
 package com.example.go4lunch.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,10 +44,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         this.usersListRestaurant= usersList;
     }
 
+
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @NotNull RestaurantAdapter.ViewHolder holder, int position) {
         Users user=usersListRestaurant.get(position) ;
-        holder.nameUser.setText(user.getName());
+        holder.nameUser.setText(user.getUsername()+" is joingning!");
         // rajouter la photo quand ca fonctionne
     }
 

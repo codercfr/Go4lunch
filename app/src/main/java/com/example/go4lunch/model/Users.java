@@ -20,6 +20,10 @@ public class Users {
     // A stocker dans le user.
     // List de strings pour les likes.
 
+    public Users(){
+
+    }
+
 
 
     public Boolean getMentor() {

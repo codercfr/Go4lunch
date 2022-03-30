@@ -38,7 +38,7 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull @NotNull CoworkerAdapter.ViewHolder holder, int position) {
         Users user = coworkerList.get(position);
-        holder.firebaseUserName.setText(user.getName()+"a choisit ce restaurant");
+        holder.firebaseUserName.setText(user.getName()+"a choisit "+user.getPlaceId());
         //rajouter la photo quand sa fonctionne.
     }
 

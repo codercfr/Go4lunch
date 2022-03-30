@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/show_restaurant"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+  >
 
     <ImageView
         android:id="@+id/id_restaurantimg"
@@ -42,8 +45,8 @@
         android:id="@+id/street_NameSelectedR"
         android:layout_width="100dp"
         android:layout_height="0dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="244dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="224dp"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/restaurantname" />
@@ -52,26 +55,26 @@
         android:id="@+id/foodType"
         android:layout_width="45dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="28dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/restaurantname"
-        app:layout_constraintVertical_bias="0.93" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="102dp"
-        android:layout_marginTop="64dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="40dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/ratingBarSelectedR"
-        tools:layout_editor_absoluteX="4dp">
+        tools:layout_editor_absoluteX="-5dp">
 
         <ImageView
             android:id="@+id/action_call"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="30dp"
             android:clickable="true"
@@ -83,7 +86,7 @@
             android:id="@+id/action_like"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:layout_marginEnd="30dp"
             android:clickable="true"
             android:focusable="true"
@@ -94,7 +97,7 @@
             android:id="@+id/action_website"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:clickable="true"
             android:enabled="true"
             android:focusable="true"
@@ -115,6 +118,7 @@
 
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="40dp"
         android:layout_height="30dp"
         android:layout_marginStart="160dp"
@@ -134,30 +138,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="12dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="-5dp">
-
-        <ImageView
-            android:id="@+id/img_restaurant_user"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
-
-        <TextView
-            android:id="@+id/name_User"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:textSize="20sp" />
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-    </LinearLayout>
 
-    <RatingBar
+        </LinearLayout>
+
+        <RatingBar
         android:id="@+id/ratingBarSelectedR"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -168,5 +160,17 @@
         app:layout_constraintStart_toEndOf="@+id/restaurantname"
         app:layout_constraintTop_toBottomOf="@+id/id_restaurantimg" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/show_restaurant_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintBottom_toBottomOf="parent">
 
+    </androidx.recyclerview.widget.RecyclerView>
+    
 </androidx.constraintlayout.widget.ConstraintLayout>
+
