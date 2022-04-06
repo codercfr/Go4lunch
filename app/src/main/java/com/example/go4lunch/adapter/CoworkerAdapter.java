@@ -1,6 +1,7 @@
 package com.example.go4lunch.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.go4lunch.R;
+import com.example.go4lunch.ShowRestaurantActivity;
 import com.example.go4lunch.model.Users;
 
 import org.jetbrains.annotations.NotNull;
@@ -38,8 +41,25 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull @NotNull CoworkerAdapter.ViewHolder holder, int position) {
         Users user = coworkerList.get(position);
-        holder.firebaseUserName.setText(user.getName()+"a choisit "+user.getPlaceId());
+        holder.firebaseUserName.setText(user.getUsername()+" a choisit "+user.getRestaurantName());
         //rajouter la photo quand sa fonctionne.
+        try {
+            Glide.with(holder.firebaseUserPhoto.getContext())
+                    .load(user.getPhotoUser())
+                    .into(holder.firebaseUserPhoto);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), ShowRestaurantActivity.class);
+            intent.putExtra("ID",user.getPlaceId());
+            try {
+                view.getContext().startActivity(intent);
+            }
+            catch (Exception exception){
+                exception.printStackTrace();
+            }
+        });
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.go4lunch.adapter;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.go4lunch.R;
 import com.example.go4lunch.model.Users;
 import com.firebase.ui.auth.data.model.User;
@@ -25,11 +27,6 @@ import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
 
-    private FirebaseUser currentFirbaseUser;
-    private Users userRestaurant;
-    private DatabaseReference databaseReference;
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase mDatabase;
     private List<Users> usersListRestaurant = new ArrayList<>();
 
     @NonNull
@@ -51,6 +48,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         Users user=usersListRestaurant.get(position) ;
         holder.nameUser.setText(user.getUsername()+" is joingning!");
         // rajouter la photo quand ca fonctionne
+       /* try {
+            Uri imageFirebaseUser= user.getPhotoUser();
+            Glide.with(holder.photoUser.getContext())
+                    .load(imageFirebaseUser)
+                    .into(holder.photoUser);
+        }catch (Exception exception) {
+            exception.printStackTrace();
+        }*/
     }
 
     @Override

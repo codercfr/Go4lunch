@@ -52,11 +52,9 @@ public class ShowRestaurantActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference databaseReference;
     private Users user;
-    private Users testUser;
     private List<String> likesList = new ArrayList<>();
     private SavedPlaceModel savedPlaceModel = new SavedPlaceModel();
     private FloatingActionButton restaurantForLunch;
-    private FirebaseUser currentFirbaseUser;
     private List<Users> usersList= new ArrayList<>();
     //S'occuper de la liste renvoyer dans l'adapteur du RecyclerView
     private RestaurantAdapter restaurantAdapter = new RestaurantAdapter(usersList);
@@ -119,19 +117,25 @@ public class ShowRestaurantActivity extends AppCompatActivity {
         });
 
         restaurantForLunch.setOnClickListener(view -> {
-            //rajouter dans le user le placeId dans le user
-            // afficher tout les users qui ont le meme placeId
-            //récupérer le user dès le début pas le mettre à jour.
             user.setPlaceId(savedPlaceModel.getPlaceId());
+            user.setRestaurantName(savedPlaceModel.getName());
+            try {
+                // A voir pour l'instant plante l'appli
+                user.setPhotoUser(Objects.requireNonNull(mAuth.getCurrentUser().getPhotoUrl()).toString());
+            }catch (Exception exception) {
+                exception.printStackTrace();
+            }
+
             usersList.add(user);
             databaseReference.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
                     .setValue(user);
             restaurantAdapter.notifyDataSetChanged();
         });
-        // oublier le type de restaurant pas demandé.
-        // pour les likes ajouter dans la liste des likes de la personne
-        //enregistrer sur firebase.
-        //afficher la liste des personnes qui à séléctionner dans le restaurants ( rien a voir avec les likes ).
+
+        //rajouter la foncitonnalité d'envoyer la notif ici
+        // regarder comment faire un one time.
+        // ou regarder pour faire l'auto.
+        //workmanager
 
     }
 

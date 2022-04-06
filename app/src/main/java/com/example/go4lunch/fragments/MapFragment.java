@@ -10,25 +10,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.go4lunch.R;
 import com.example.go4lunch.model.GooglePlaceModel;
-import com.example.go4lunch.response.GoogleResponseModel;
 import com.example.go4lunch.view_model.MapsViewModel;
-import com.example.go4lunch.view_model.PlacesViewModel;
-import com.example.go4lunch.webServices.RetrofitApi;
-import com.example.go4lunch.webServices.RetrofitClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,11 +37,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback {
@@ -56,28 +44,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private GoogleMap mMap;
     private Marker currentMarker;
     private Location currentLocation;
-    private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private int radius = 5000;
     private boolean isLocationPermissionOk;
-    private RetrofitApi retrofitApi;
     private List<GooglePlaceModel> googlePlaceModelList;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private MapsViewModel mapsViewModel;
-
+    AutoCompleteTextView text;
+    private ArrayList<String>restaurantName= new ArrayList<>();
+    private ArrayAdapter<String>adapter;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_map, container, false);
-        retrofitApi = RetrofitClient.getRetrofitClient().create(RetrofitApi.class);
+
         googlePlaceModelList=new ArrayList<>();
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
+
+        //test autocomplete
+        text= rootview.findViewById(R.id.autoCompleteTextView1);
+        //ArrayAdapter pour le autocomplete
+        //context,adapter déja programmé, la liste de noms des restaurants.
+        adapter= new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1,restaurantName);
+        text.setAdapter(adapter);
+        //initialize fusef location provider client
         //initialize fusef location provider client
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
         mapsViewModel= new ViewModelProvider(this).get(MapsViewModel.class);
@@ -89,20 +85,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(@NotNull LocationResult locationResult) {
-                for (Location location : locationResult.getLocations()) {
-                    Log.d("TAG", "onLocationResult: " + location.getLongitude() + " " + location.getLatitude());
-                }
-
-                super.onLocationResult(locationResult);
-            }
-        };
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
        getCurentLocation();
+
 
 
     }
@@ -177,6 +163,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 // move map camera
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+                restaurantName.add(placeName);
             }
         } catch (Exception e) {
             Log.d("onResponse", "There is an error");
@@ -195,6 +182,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             mMap.setMyLocationEnabled(true);
             //le remettre en place une fois que l'obersable est crée.
             setUpLocationUpdate();
+            adapter.notifyDataSetChanged();
+
         } else {
             ActivityCompat.requestPermissions((Activity) requireContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
@@ -203,7 +192,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
 
 
-
-    }
+}
 
 

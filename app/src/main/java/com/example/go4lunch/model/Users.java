@@ -1,5 +1,7 @@
 package com.example.go4lunch.model;
 
+import android.net.Uri;
+
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -12,7 +14,9 @@ public class Users {
     private String placeId;
     private String name;
     private String adresseRestaurant;
+    private String restaurantName;
     private List<String> likes;
+    private String photoUser;
     //reprendre la photo du user
     //place id
     //restau name
@@ -24,7 +28,21 @@ public class Users {
 
     }
 
+    public String getPhotoUser() {
+        return photoUser;
+    }
 
+    public void setPhotoUser(String photoUser) {
+        this.photoUser = photoUser;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
 
     public Boolean getMentor() {
         return isMentor;

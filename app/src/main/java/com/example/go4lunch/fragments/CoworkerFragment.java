@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,13 +32,14 @@ public class CoworkerFragment extends Fragment {
     private List<Users> usersList = new ArrayList<>();
     private CoworkerAdapter coworkerAdapter = new CoworkerAdapter(usersList);
     private CoworkerViewModel coworkerViewModel;
+    private ArrayList<String>restaurantName= new ArrayList<>();
 
 
     @Override
     public View onCreateView( LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_saved_places, container, false);
-        recyclerView=rootView.findViewById(R.id.show_restaurant_recyclerview);
+        View rootView = inflater.inflate(R.layout.coworker_recyclerview, container, false);
+        recyclerView=rootView.findViewById(R.id.show_coworker_recyclerview);
         coworkerViewModel=new ViewModelProvider(this).get(CoworkerViewModel.class);
         return rootView;
     }
@@ -50,6 +53,9 @@ public class CoworkerFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), usersList -> {
                     this.usersList.clear();
                     this.usersList.addAll(usersList);
+                    for (int i =0 ; i<usersList.size();i++){
+                        restaurantName.add(usersList.get(i).getRestaurantName());
+                    }
                     coworkerAdapter.notifyDataSetChanged();
                 });
 
