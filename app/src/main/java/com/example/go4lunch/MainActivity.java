@@ -107,9 +107,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void addDataToFireBase(String id, String name){
-
-    }
 
 
     private void firebaseAuthWithGoogle(String idToken) {
