@@ -34,7 +34,7 @@ public class FacebookAuthActivity extends MainActivity {
 
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-
+        mAuth = FirebaseAuth.getInstance();
 
         LoginButton loginButton = findViewById(R.id.facebook_button);
 

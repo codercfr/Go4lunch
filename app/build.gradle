@@ -86,6 +86,8 @@ dependencies {
     //lifecycle mvvm for viewmodel provider package
     //implementation'androidx.lifecycle:lifecycle-extension:2.2.0'
 
+    // WorkManager
+
 
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
     implementation 'androidx.appcompat:appcompat:1.4.1'

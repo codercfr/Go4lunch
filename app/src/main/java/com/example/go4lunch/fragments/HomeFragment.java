@@ -23,7 +23,9 @@ import com.example.go4lunch.view_model.PlacesViewModel;
 import com.example.go4lunch.webServices.RetrofitApi;
 import com.example.go4lunch.webServices.RetrofitClient;
 import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
@@ -53,7 +55,8 @@ public class HomeFragment extends Fragment {
         retrofitApi = RetrofitClient.getRetrofitClient().create(RetrofitApi.class);
         recyclerView=rootView.findViewById(R.id.savedRecyclerView);
         // remplacer par le autocomplete de google
-
+        Places.initialize(requireContext(), "AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw");
+        PlacesClient placesClient = Places.createClient(requireContext());
         // Initialize the AutocompleteSupportFragment.
         // pour getChildFragmentManager dans un framgent
         //getParentFramentManager pour une activité
@@ -68,7 +71,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 Intent intent = new Intent(requireContext(), ShowRestaurantActivity.class);
-                intent.putExtra("ID",place.getName());
+                intent.putExtra("ID",place.getId());
                 try {
                    startActivity(intent);
                 }

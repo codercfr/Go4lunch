@@ -48,14 +48,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         Users user=usersListRestaurant.get(position) ;
         holder.nameUser.setText(user.getUsername()+" is joingning!");
         // rajouter la photo quand ca fonctionne
-       /* try {
-            Uri imageFirebaseUser= user.getPhotoUser();
+
+        try {
             Glide.with(holder.photoUser.getContext())
-                    .load(imageFirebaseUser)
+                    .load(user.getPhotoUser())
                     .into(holder.photoUser);
-        }catch (Exception exception) {
-            exception.printStackTrace();
-        }*/
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

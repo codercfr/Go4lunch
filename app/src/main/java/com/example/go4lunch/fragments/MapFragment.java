@@ -50,7 +50,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private List<GooglePlaceModel> googlePlaceModelList;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private MapsViewModel mapsViewModel;
-    AutoCompleteTextView text;
     private ArrayList<String>restaurantName= new ArrayList<>();
     private ArrayAdapter<String>adapter;
 
@@ -67,12 +66,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             mapFragment.getMapAsync(this);
         }
 
-        //test autocomplete
-        text= rootview.findViewById(R.id.autoCompleteTextView1);
+
         //ArrayAdapter pour le autocomplete
         //context,adapter déja programmé, la liste de noms des restaurants.
         adapter= new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1,restaurantName);
-        text.setAdapter(adapter);
         //initialize fusef location provider client
         //initialize fusef location provider client
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
