@@ -1,5 +1,6 @@
 package com.example.go4lunch;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.OneTimeWorkRequest;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.adapter.RestaurantAdapter;
@@ -35,9 +37,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 
 public class ShowRestaurantActivity extends AppCompatActivity {
@@ -125,7 +132,7 @@ public class ShowRestaurantActivity extends AppCompatActivity {
             }catch (Exception exception) {
                 exception.printStackTrace();
             }
-
+            OneRequest();
             usersList.add(user);
             databaseReference.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
                     .setValue(user);
@@ -174,4 +181,29 @@ public class ShowRestaurantActivity extends AppCompatActivity {
                 .load(urlPhoto)
                 .into(restaurantView);
             }
+
+    public static void  OneRequest(){
+        //regarder comment calculer quand il est midi
+        //délais entre 2 dates.
+        Date nextDay= new Date();
+        Calendar cal= Calendar.getInstance();
+        cal.setTime(nextDay);
+        cal.add((Calendar.DATE),1);
+        cal.set((Calendar.HOUR_OF_DAY),12);
+        cal.set((Calendar.MINUTE),0);
+        nextDay=cal.getTime();
+        Date currentTime = Calendar.getInstance().getTime();
+        long diffhours = nextDay.getTime()-currentTime.getTime();
+        int hours=(int)(diffhours/(1000*60*60));
+        /*long diff=TimeUnit.HOURS.convert(nextDay.getTime()-currentTime.getTime(),TimeUnit.HOURS);
+        int difInt=(int) diff;*/
+
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationCoworker.class)
+                .setInitialDelay(hours, TimeUnit.DAYS)
+                .build();
+
+        // a remplir
+
+
+    }
 }

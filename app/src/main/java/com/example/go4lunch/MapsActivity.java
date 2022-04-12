@@ -1,6 +1,7 @@
 package com.example.go4lunch;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -18,10 +19,13 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.go4lunch.fragments.CoworkerFragment;
 import com.example.go4lunch.fragments.HomeFragment;
 import com.example.go4lunch.fragments.MapFragment;
+import com.example.go4lunch.model.Users;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +34,12 @@ public class MapsActivity extends AppCompatActivity implements
 
 
     private DrawerLayout drawer;
+    private Users user;
+    private FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase mDatabase;
+
+
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -38,10 +48,16 @@ public class MapsActivity extends AppCompatActivity implements
         // Retrieve the content view that renders the map.
         setContentView(R.layout.activity_maps);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_view);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawerLayout);
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase=FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
+        databaseReference= mDatabase.getReference("Users");
+        databaseReference.child((mAuth.getCurrentUser()).getUid()).get().addOnSuccessListener(dataSnapshot ->  {
+            user= dataSnapshot.getValue(Users.class);
+        });
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -102,8 +118,14 @@ public class MapsActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.lunch_restaurant:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new CoworkerFragment()).commit();
+                Intent intent = new Intent(this, ShowRestaurantActivity.class);
+                intent.putExtra("ID",user.getPlaceId());
+                try {
+                    startActivity(intent);
+                }
+                catch (Exception exception){
+                    exception.printStackTrace();
+                }
                 break;
             case R.id.setings:
               // a voir comment s'occuper des notifications.
@@ -111,6 +133,8 @@ public class MapsActivity extends AppCompatActivity implements
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 finish();
+                Intent newIntent = new Intent(this, MainActivity.class);
+                startActivity(newIntent);
                 break;
     }
         drawer.closeDrawer(GravityCompat.START);

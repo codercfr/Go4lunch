@@ -23,6 +23,9 @@
     <string name="navigation_call">Call</string>
     <string name="navigation_like">Like</string>
     <string name="navigation_website">Website</string>
+    <!-- NOTIFICATION -->
+    <string name="notifcation">Restaurant chosen</string>
+
 
 
 

@@ -6,12 +6,15 @@
     <group android:checkableBehavior="single">
         <item android:id="@+id/lunch_restaurant"
             android:icon="@drawable/restaurant_icon"
+            android:enabled="true"
             android:title="@string/lunch_restaurant"/>
         <item android:id="@+id/setings"
             android:icon="@drawable/settings_icon"
+            android:enabled="true"
             android:title="@string/setings"/>
         <item android:id="@+id/logout"
             android:icon="@drawable/logout_icon"
+            android:enabled="true"
             android:title="@string/logout"/>
     </group>
 </menu>
