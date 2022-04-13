@@ -55,37 +55,6 @@ public class HomeFragment extends Fragment {
         retrofitApi = RetrofitClient.getRetrofitClient().create(RetrofitApi.class);
         recyclerView=rootView.findViewById(R.id.savedRecyclerView);
         // remplacer par le autocomplete de google
-        Places.initialize(requireContext(), "AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw");
-        PlacesClient placesClient = Places.createClient(requireContext());
-        // Initialize the AutocompleteSupportFragment.
-        // pour getChildFragmentManager dans un framgent
-        //getParentFramentManager pour une activité
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-        // Specify the types of place data to return.
-        assert autocompleteFragment != null;
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                Intent intent = new Intent(requireContext(), ShowRestaurantActivity.class);
-                intent.putExtra("ID",place.getId());
-                try {
-                   startActivity(intent);
-                }
-                catch (Exception exception){
-                    exception.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-                // TODO: Handle the error.
-
-            }
-        });
         placesViewModel= new ViewModelProvider(this).get(PlacesViewModel.class);
         return rootView;
     }

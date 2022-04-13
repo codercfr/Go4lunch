@@ -110,6 +110,7 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
             holder.ratingBar.setNumStars(5);
         }
     }
+    @SuppressLint("SetTextI18n")
     private void getLocationToPlaces(GooglePlaceAdapter.ViewHolder holder, int position){
         GooglePlaceModel placeModel = googlePlaceModels.get(position);
         Location currentLocation= new Location("currentLocation");
@@ -121,9 +122,10 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
         newLocation.setLongitude(placeModel.getGeometry().getLocation().getLng());
 
         float distance = currentLocation.distanceTo(newLocation);
-        String distanceM=String.valueOf(distance);
+        int distanceInt= (int) distance;
+        String distanceM=String.valueOf(distanceInt);
         //caster en int et mettre "m"
-        holder.distancePlaces.setText(distanceM);
+        holder.distancePlaces.setText(distanceM+"m");
 
     }
 

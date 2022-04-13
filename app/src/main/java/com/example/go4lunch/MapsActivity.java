@@ -1,10 +1,17 @@
 package com.example.go4lunch;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +28,10 @@ import com.example.go4lunch.fragments.HomeFragment;
 import com.example.go4lunch.fragments.MapFragment;
 import com.example.go4lunch.model.Users;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +39,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback,NavigationView.OnNavigationItemSelectedListener {
@@ -38,7 +52,7 @@ public class MapsActivity extends AppCompatActivity implements
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
     private FirebaseDatabase mDatabase;
-
+    private EditText editText;
 
 
     @SuppressLint("NonConstantResourceId")
@@ -57,6 +71,39 @@ public class MapsActivity extends AppCompatActivity implements
         databaseReference.child((mAuth.getCurrentUser()).getUid()).get().addOnSuccessListener(dataSnapshot ->  {
             user= dataSnapshot.getValue(Users.class);
         });
+
+        Places.initialize(getApplicationContext(),"AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw");
+        editText=findViewById(R.id.autoComplete);
+
+        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        Place place = Autocomplete.getPlaceFromIntent(data);
+                        editText.setText(place.getAddress());
+                        Intent intent = new Intent(this, ShowRestaurantActivity.class);
+                        intent.putExtra("ID",place.getId());
+                        try {
+                            startActivity(intent);
+                        }
+                        catch (Exception exception){
+                            exception.printStackTrace();
+                        }
+                    }
+                });
+
+        editText.setFocusable(false);
+        editText.setOnClickListener(view -> {
+            List<Place.Field> fieldList = Arrays.asList(Place.Field.ID,Place.Field.NAME);
+            Intent intent= new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,fieldList)
+                    .build(MapsActivity.this);
+            someActivityResultLauncher.launch(intent);
+
+        });
+
+
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
