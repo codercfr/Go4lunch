@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.adapter.RestaurantAdapter;
@@ -182,7 +183,7 @@ public class ShowRestaurantActivity extends AppCompatActivity {
                 .into(restaurantView);
             }
 
-    public static void  OneRequest(){
+    public void  OneRequest(){
         //regarder comment calculer quand il est midi
         //délais entre 2 dates.
         Date nextDay= new Date();
@@ -199,11 +200,11 @@ public class ShowRestaurantActivity extends AppCompatActivity {
         int difInt=(int) diff;*/
 
         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationCoworker.class)
-                .setInitialDelay(hours, TimeUnit.DAYS)
+                //.setInitialDelay(hours, TimeUnit.DAYS)
                 .build();
 
         // a remplir
-
+        WorkManager.getInstance(this).enqueue(oneTimeWorkRequest);
 
     }
 }

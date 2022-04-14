@@ -46,7 +46,6 @@ public class CoworkerRepository {
                 public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
 
                     for (DataSnapshot ds : snapshot.getChildren()) {
-
                         user=ds.getValue(Users.class);
                         usersList.add(user);
                     }
