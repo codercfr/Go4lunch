@@ -6,29 +6,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.example.go4lunch.fragments.CoworkerFragment;
 import com.example.go4lunch.fragments.HomeFragment;
 import com.example.go4lunch.fragments.MapFragment;
 import com.example.go4lunch.model.Users;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -43,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MapsActivity extends AppCompatActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback,NavigationView.OnNavigationItemSelectedListener {
@@ -53,7 +51,8 @@ public class MapsActivity extends AppCompatActivity implements
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
     private FirebaseDatabase mDatabase;
-    private ImageView search;
+    private ImageView search, navImageUser;
+    private TextView navUsername,navEmail;
 
 
     @SuppressLint("NonConstantResourceId")
@@ -66,13 +65,31 @@ public class MapsActivity extends AppCompatActivity implements
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawerLayout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        navUsername = (TextView) headerView.findViewById(R.id.userNameMenu);
+        navEmail=(TextView)headerView.findViewById(R.id.navEmail);
+        navImageUser=(ImageView)headerView.findViewById(R.id.navImageUser);
         mAuth = FirebaseAuth.getInstance();
         search=findViewById(R.id.search);
         mDatabase=FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
         databaseReference= mDatabase.getReference("Users");
         databaseReference.child((mAuth.getCurrentUser()).getUid()).get().addOnSuccessListener(dataSnapshot ->  {
             user= dataSnapshot.getValue(Users.class);
+            navUsername.setText(Objects.requireNonNull(user).getUsername());
+            navEmail.setText(user.getEmail());
+
+            //fonctionne pas pour l'instnat
+            /*try{
+            Glide.with(navImageUser.getContext())
+                    .load(user.getPhotoUser())
+                    .into(navImageUser);
+            }catch (Exception exception) {
+                exception.printStackTrace();
+            }*/
         });
+
+
 
         Places.initialize(getApplicationContext(),"AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw");
 
@@ -82,6 +99,7 @@ public class MapsActivity extends AppCompatActivity implements
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         // There are no request codes
                         Intent data = result.getData();
+                        assert data != null;
                         Place place = Autocomplete.getPlaceFromIntent(data);
                         //editText.setText(place.getAddress());
                         Intent intent = new Intent(this, ShowRestaurantActivity.class);
@@ -104,16 +122,12 @@ public class MapsActivity extends AppCompatActivity implements
         });
 
 
-
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             switch (item.getItemId()) {
@@ -164,6 +178,7 @@ public class MapsActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.lunch_restaurant:
                 Intent intent = new Intent(this, ShowRestaurantActivity.class);
                 intent.putExtra("ID",user.getPlaceId());

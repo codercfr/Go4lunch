@@ -17,6 +17,7 @@ public class Users {
     private String restaurantName;
     private List<String> likes;
     private String photoUser;
+    private String email;
     //reprendre la photo du user
     //place id
     //restau name
@@ -26,6 +27,14 @@ public class Users {
 
     public Users(){
 
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPhotoUser() {
