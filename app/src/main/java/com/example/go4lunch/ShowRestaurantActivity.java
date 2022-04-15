@@ -203,7 +203,6 @@ public class ShowRestaurantActivity extends AppCompatActivity {
                 //.setInitialDelay(hours, TimeUnit.DAYS)
                 .build();
 
-        // a remplir
         WorkManager.getInstance(this).enqueue(oneTimeWorkRequest);
 
     }

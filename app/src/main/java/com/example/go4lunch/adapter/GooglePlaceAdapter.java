@@ -50,9 +50,10 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
     public void onBindViewHolder(@NonNull @NotNull GooglePlaceAdapter.ViewHolder holder, int position) {
         holder.itemView.setSelected(selected_position == position);
         GooglePlaceModel placeModel = googlePlaceModels.get(position);
+        int rating =(placeModel.getRating()).intValue();
             holder.placesName.setText(placeModel.getName());
             holder.street_Name.setText(placeModel.getVicinity());
-            holder.rating.setText(placeModel.getRating().toString());
+            holder.rating.setText(String.valueOf(rating));
             holder.open.setText(placeModel.getBusinessStatus());
             getRatingStars(holder,position);
             getLocationToPlaces(holder,position);

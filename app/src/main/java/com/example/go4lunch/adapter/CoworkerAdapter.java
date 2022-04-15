@@ -1,6 +1,7 @@
 package com.example.go4lunch.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,10 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
 
     private List<Users> coworkerList;
 
+
+    //demandé si autre façon d'ajouter du context.
+    private Context context;
+
     public CoworkerAdapter(List<Users> usersList){
         this.coworkerList=usersList;
     }
@@ -35,13 +40,19 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
     public CoworkerAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coworker_fragment_layout,parent,false);
         return new ViewHolder(view);
+
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @NotNull CoworkerAdapter.ViewHolder holder, int position) {
         Users user = coworkerList.get(position);
-        holder.firebaseUserName.setText(user.getUsername()+" a choisit "+user.getRestaurantName());
+
+        if(user.getRestaurantName()==null){
+            holder.firebaseUserName.setText(user.getUsername()+" hasn't decided yet");
+        }else {
+            holder.firebaseUserName.setText(user.getUsername() + " is eating at "+ user.getRestaurantName());
+        }
         //rajouter la photo quand sa fonctionne.
         try {
             Glide.with(holder.firebaseUserPhoto.getContext())

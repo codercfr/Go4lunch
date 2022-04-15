@@ -71,6 +71,9 @@ public class GooglePlaceModel {
     @Expose
     private String vicinity;
 
+
+
+
     @Expose(serialize = false, deserialize = false)
     private boolean isSaved;
 
