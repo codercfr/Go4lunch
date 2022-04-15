@@ -45,10 +45,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private Marker currentMarker;
     private Location currentLocation;
     private LocationRequest locationRequest;
-    private int radius = 5000;
-    private boolean isLocationPermissionOk;
     private List<GooglePlaceModel> googlePlaceModelList;
-    private FusedLocationProviderClient fusedLocationProviderClient;
+    //private FusedLocationProviderClient fusedLocationProviderClient;
     private MapsViewModel mapsViewModel;
     private ArrayList<String>restaurantName= new ArrayList<>();
     private ArrayAdapter<String>adapter;
@@ -66,13 +64,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             mapFragment.getMapAsync(this);
         }
 
-
-        //ArrayAdapter pour le autocomplete
-        //context,adapter déja programmé, la liste de noms des restaurants.
         adapter= new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1,restaurantName);
-        //initialize fusef location provider client
-        //initialize fusef location provider client
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        //fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
         mapsViewModel= new ViewModelProvider(this).get(MapsViewModel.class);
         return rootview;
     }
@@ -82,7 +75,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        //fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
        getCurentLocation();
 
@@ -118,7 +111,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            isLocationPermissionOk = false;
             return;
         }
 
@@ -159,7 +151,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 // move map camera
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
                 restaurantName.add(placeName);
             }
         } catch (Exception e) {
@@ -177,7 +169,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            //le remettre en place une fois que l'obersable est crée.
             setUpLocationUpdate();
             adapter.notifyDataSetChanged();
 

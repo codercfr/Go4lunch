@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -52,7 +53,7 @@ public class MapsActivity extends AppCompatActivity implements
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
     private FirebaseDatabase mDatabase;
-    private EditText editText;
+    private ImageView search;
 
 
     @SuppressLint("NonConstantResourceId")
@@ -66,6 +67,7 @@ public class MapsActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawerLayout);
         mAuth = FirebaseAuth.getInstance();
+        search=findViewById(R.id.search);
         mDatabase=FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
         databaseReference= mDatabase.getReference("Users");
         databaseReference.child((mAuth.getCurrentUser()).getUid()).get().addOnSuccessListener(dataSnapshot ->  {
@@ -73,7 +75,6 @@ public class MapsActivity extends AppCompatActivity implements
         });
 
         Places.initialize(getApplicationContext(),"AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw");
-        editText=findViewById(R.id.autoComplete);
 
         ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -82,7 +83,7 @@ public class MapsActivity extends AppCompatActivity implements
                         // There are no request codes
                         Intent data = result.getData();
                         Place place = Autocomplete.getPlaceFromIntent(data);
-                        editText.setText(place.getAddress());
+                        //editText.setText(place.getAddress());
                         Intent intent = new Intent(this, ShowRestaurantActivity.class);
                         intent.putExtra("ID",place.getId());
                         try {
@@ -94,8 +95,7 @@ public class MapsActivity extends AppCompatActivity implements
                     }
                 });
 
-        editText.setFocusable(false);
-        editText.setOnClickListener(view -> {
+        search.setOnClickListener(view -> {
             List<Place.Field> fieldList = Arrays.asList(Place.Field.ID,Place.Field.NAME);
             Intent intent= new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,fieldList)
                     .build(MapsActivity.this);

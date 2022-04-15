@@ -15,6 +15,7 @@ public class MapsViewModel extends ViewModel {
     private static final PlacesRepository placesRepository= new PlacesRepository();
 
 
+
     // remettre la map pour le fragment.
     // faire lien entre repo et fragment
     // return la livedata du repository et c'est tout.

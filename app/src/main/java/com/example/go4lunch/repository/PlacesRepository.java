@@ -1,13 +1,9 @@
 package com.example.go4lunch.repository;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.go4lunch.R;
-import com.example.go4lunch.adapter.GooglePlaceAdapter;
 import com.example.go4lunch.model.GooglePlaceModel;
 import com.example.go4lunch.response.GoogleResponseModel;
 import com.example.go4lunch.webServices.RetrofitApi;
