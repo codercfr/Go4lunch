@@ -24,13 +24,20 @@
         android:layout_width="246dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnsign" />
 
-
-
+    <Button
+        android:id="@+id/sign_in_byMail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:text="@string/sign_in_nogoogle"
+        android:backgroundTint="#FF3D00"
+        app:layout_constraintTop_toBottomOf="@+id/facebook_button"
+        tools:layout_editor_absoluteX="145dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

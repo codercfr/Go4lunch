@@ -28,6 +28,15 @@
     <string name="coworkerChoice">hasn\'t decided yet</string>
     <string name="coworkerEat">is eating at </string>
 
+    <!-- Identification -->
+    <string name="create_account">Create your account </string>
+    <string name="email">email </string>
+    <string name="password">password </string>
+    <string name="confirm_password">confirm_password </string>
+    <string name="or">or </string>
+    <string name="sign_in">sign_in </string>
+    <string name="sign_in_nogoogle">sign in by mail </string>
+
 
 
 

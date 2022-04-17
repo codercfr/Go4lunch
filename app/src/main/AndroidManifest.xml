@@ -35,10 +35,17 @@
             android:label=""
              />
         <activity
+            android:name=".CreateAccountActivity"
+            android:label=""
+            android:exported="true"
+            />
+        <activity
             android:name=".MainActivity"
             android:label=""
             android:exported="true"
             >
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

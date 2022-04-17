@@ -18,6 +18,7 @@ public class Users {
     private List<String> likes;
     private String photoUser;
     private String email;
+    private String password;
     //reprendre la photo du user
     //place id
     //restau name
@@ -27,6 +28,14 @@ public class Users {
 
     public Users(){
 
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {

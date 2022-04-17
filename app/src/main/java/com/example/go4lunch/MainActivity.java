@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference databaseReference;
     private Users user;
-
+    private Button signInButton;
 
 
 
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnSign = findViewById(R.id.btnsign);
         facebook_button= findViewById(R.id.facebook_button);
+        signInButton=findViewById(R.id.sign_in_byMail);
         googleSignIn();
         mAuth = FirebaseAuth.getInstance();
         mDatabase=FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -95,7 +96,11 @@ public class MainActivity extends AppCompatActivity {
             facebook_button.setOnClickListener(v->{
                Intent intent = new Intent(MainActivity.this,FacebookAuthActivity.class);
                startActivity(intent);
+            });
 
+            signInButton.setOnClickListener(view -> {
+                Intent intent = new Intent(MainActivity.this,CreateAccountActivity.class);
+                startActivity(intent);
             });
 
     }
