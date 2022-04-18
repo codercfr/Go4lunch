@@ -99,8 +99,11 @@ public class MainActivity extends AppCompatActivity {
             });
 
             signInButton.setOnClickListener(view -> {
-                Intent intent = new Intent(MainActivity.this,CreateAccountActivity.class);
-                startActivity(intent);
+                FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                if(firebaseUser==null) {
+                    Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
+                    startActivity(intent);
+                }
             });
 
     }

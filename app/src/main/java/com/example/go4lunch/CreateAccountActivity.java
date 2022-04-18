@@ -2,8 +2,10 @@ package com.example.go4lunch;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,15 +48,43 @@ public class CreateAccountActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         createAccount.setOnClickListener(view -> {
-            createAccount();
+            String user_email = email.getText().toString().trim();
+            String user_password =
+                    password.getText().toString().trim();
+            String confirm_paswword = confirmPassword.getText().toString().trim();
+            if (TextUtils.isEmpty(user_email)){
+                email.setError("Email cannot be empty");
+                email.requestFocus();
+            }else if (TextUtils.isEmpty(user_password)) {
+                password.setError("Password cannot be empty");
+                password.requestFocus();
+
+            }else {
+                firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        user=new Users();
+                        user.setEmail(user_email);
+                        user.setPassword(user_password);
+                        databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                                .setValue(user);
+                        startActivity(new Intent(CreateAccountActivity.this, MapsActivity.class));
+                    } else {
+                        task.getException().getMessage();
+                        Toast.makeText(this,  task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        task.getException().getMessage();
+                    }
+                });
+            }
         });
     }
+
 
     private void createAccount() {
         String user_email = email.getText().toString().trim();
         String user_password =
                 password.getText().toString().trim();
         String confirm_paswword = confirmPassword.getText().toString().trim();
+
         firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 user=new Users();
