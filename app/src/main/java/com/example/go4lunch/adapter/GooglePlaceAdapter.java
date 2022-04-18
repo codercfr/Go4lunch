@@ -54,7 +54,10 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
             holder.placesName.setText(placeModel.getName());
             holder.street_Name.setText(placeModel.getVicinity());
             holder.rating.setText(String.valueOf(rating));
-            holder.open.setText(placeModel.getBusinessStatus());
+            if(placeModel.getOpeningHours()!=null) {
+                //changer la string pour que ça ressemble au model.
+                holder.open.setText(placeModel.getOpeningHours().getOpenNow().toString());
+            }
             getRatingStars(holder,position);
             getLocationToPlaces(holder,position);
 

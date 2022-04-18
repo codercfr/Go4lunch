@@ -15,8 +15,8 @@ public class PlacesViewModel extends ViewModel {
     private static final  PlacesRepository repository = new PlacesRepository();
 
 
-    public LiveData<List<GooglePlaceModel>> getTasks() {
-        return repository.getRestaurantName();
+    public LiveData<List<GooglePlaceModel>> getTasks(double currentLat,double currrentLong) {
+        return repository.getRestaurantName(currentLat,currrentLong);
     }
 
     public static PlacesRepository getRepository(){

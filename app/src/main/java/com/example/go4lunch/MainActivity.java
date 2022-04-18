@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                                 user.setUid(account.getId());
                                 user.setUsername(account.getGivenName());
                                 user.setEmail(account.getEmail());
+                                user.setPhotoUser(account.getPhotoUrl().toString());
                                 databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                                         .setValue(user);
                             }catch (Exception e){

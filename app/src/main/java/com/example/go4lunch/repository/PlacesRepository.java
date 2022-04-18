@@ -27,7 +27,7 @@ public class PlacesRepository {
     public PlacesRepository() {
     }
 
-    public MutableLiveData<List<GooglePlaceModel>>  getRestaurantName(){
+    public MutableLiveData<List<GooglePlaceModel>>  getRestaurantName(double currentLat, double currrentLong){
         retrofitApi = RetrofitClient.getRetrofitClient().create(RetrofitApi .class);
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"+"?location="+currentLat+","
                 +currrentLong+"&radius=5000"

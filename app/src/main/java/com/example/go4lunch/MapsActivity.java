@@ -78,15 +78,14 @@ public class MapsActivity extends AppCompatActivity implements
             user= dataSnapshot.getValue(Users.class);
             navUsername.setText(Objects.requireNonNull(user).getUsername());
             navEmail.setText(user.getEmail());
-
-            //fonctionne pas pour l'instnat
-            /*try{
+            //fonctionne pas pour l'instant
+            try{
             Glide.with(navImageUser.getContext())
                     .load(user.getPhotoUser())
                     .into(navImageUser);
             }catch (Exception exception) {
                 exception.printStackTrace();
-            }*/
+            }
         });
 
 

@@ -1,6 +1,9 @@
 package com.example.go4lunch.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +27,8 @@ import com.example.go4lunch.view_model.PlacesViewModel;
 import com.example.go4lunch.webServices.RetrofitApi;
 import com.example.go4lunch.webServices.RetrofitClient;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -44,7 +50,8 @@ public class HomeFragment extends Fragment {
     private RetrofitApi retrofitApi;
     private PlacesViewModel placesViewModel;
     private ArrayList<String>restaurantName= new ArrayList<>();
-
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private Location currentLocation;
 
 
     @Override
@@ -55,6 +62,7 @@ public class HomeFragment extends Fragment {
         retrofitApi = RetrofitClient.getRetrofitClient().create(RetrofitApi.class);
         recyclerView=rootView.findViewById(R.id.savedRecyclerView);
         // remplacer par le autocomplete de google
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
         placesViewModel= new ViewModelProvider(this).get(PlacesViewModel.class);
         return rootView;
     }
@@ -65,19 +73,36 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(googlePlaceAdapter);
         //creat method pour le viewmodel
-        placesViewModel.getTasks()
-                .observe(getViewLifecycleOwner(), googlePlaceModels -> {
-                    //
-                    this.googlePlaceModels.clear();
-                    this.googlePlaceModels.addAll(googlePlaceModels);
-                    for (int i =0 ; i<googlePlaceModels.size();i++){
-                        restaurantName.add(googlePlaceModels.get(i).getName());
-                    }
-                    googlePlaceAdapter.notifyDataSetChanged();
 
-                });
+        getCurentLocation();
 
     }
 
+
+    private void getCurentLocation() {
+        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
+            currentLocation=location;
+            //lancé la requete réseau.
+            //récupérer la location et lancé l'observer livedata
+            placesViewModel.getTasks(currentLocation.getLatitude(),currentLocation.getLongitude())
+                    .observe(getViewLifecycleOwner(),googlePlaceModels -> {
+                        this.googlePlaceModels.clear();
+                        this.googlePlaceModels.addAll(googlePlaceModels);
+                        for (int i =0 ; i<googlePlaceModels.size();i++){
+                            restaurantName.add(googlePlaceModels.get(i).getName());
+                        }
+                        googlePlaceAdapter.notifyDataSetChanged();
+
+                    });
+
+        });
+    }
 
 }

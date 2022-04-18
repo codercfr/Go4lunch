@@ -40,7 +40,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         setContentView(R.layout.create_account_activity);
         email = findViewById(R.id.etEmail);
         password = findViewById(R.id.etPassword);
-        confirmPassword = findViewById(R.id.etConfirmPassword);
         createAccount = findViewById(R.id.btnCreateAccount);
         signIn = findViewById(R.id.btnSignIn2);
         mDatabase= FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");

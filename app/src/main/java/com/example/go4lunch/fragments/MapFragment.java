@@ -46,7 +46,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private Location currentLocation;
     private LocationRequest locationRequest;
     private List<GooglePlaceModel> googlePlaceModelList;
-    //private FusedLocationProviderClient fusedLocationProviderClient;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     private MapsViewModel mapsViewModel;
     private ArrayList<String>restaurantName= new ArrayList<>();
     private ArrayAdapter<String>adapter;
@@ -75,7 +75,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        //fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
        getCurentLocation();
 
@@ -119,7 +119,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             moveCameraToLocation(currentLocation);
             //lancé la requete réseau.
             //récupérer la location et lancé l'observer livedata
-            mapsViewModel.getListRestaurant()
+            mapsViewModel.getListRestaurant(currentLocation.getLatitude(),currentLocation.getLongitude())
                     .observe(getViewLifecycleOwner(),googlePlaceModels -> {
                         this.googlePlaceModelList.clear();
                         this.googlePlaceModelList.addAll(googlePlaceModels);

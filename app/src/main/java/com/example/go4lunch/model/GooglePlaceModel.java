@@ -71,8 +71,18 @@ public class GooglePlaceModel {
     @Expose
     private String vicinity;
 
+    @SerializedName("opening_hours")
+    @Expose
+    private ResponseOpeningHours openingHours;
 
 
+    public ResponseOpeningHours getOpeningHours() {
+        return openingHours;
+    }
+
+    public void setOpeningHours(ResponseOpeningHours openingHours) {
+        this.openingHours = openingHours;
+    }
 
     @Expose(serialize = false, deserialize = false)
     private boolean isSaved;
