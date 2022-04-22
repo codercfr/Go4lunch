@@ -1,6 +1,5 @@
 package com.example.go4lunch;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -26,20 +25,13 @@ import com.example.go4lunch.adapter.RestaurantAdapter;
 import com.example.go4lunch.model.SavedPlaceModel;
 import com.example.go4lunch.model.Users;
 import com.example.go4lunch.view_model.RestaurantViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -200,7 +192,7 @@ public class ShowRestaurantActivity extends AppCompatActivity {
         int difInt=(int) diff;*/
 
         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationCoworker.class)
-                //.setInitialDelay(hours, TimeUnit.DAYS)
+                .setInitialDelay(hours, TimeUnit.DAYS)
                 .build();
 
         WorkManager.getInstance(this).enqueue(oneTimeWorkRequest);
