@@ -22,6 +22,7 @@ import com.example.go4lunch.model.GooglePlaceModel;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.ViewHolder> {
 
@@ -56,7 +57,12 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
             holder.rating.setText(String.valueOf(rating));
             if(placeModel.getOpeningHours()!=null) {
                 //changer la string pour que ça ressemble au model.
-                holder.open.setText(placeModel.getOpeningHours().getOpenNow().toString());
+                if(Objects.equals(placeModel.getOpeningHours().getOpenNow(),"true")) {
+                    holder.open.setText("Open");
+                }
+                else {
+                    holder.open.setText("Closed");
+                }
             }
             getRatingStars(holder,position);
             getLocationToPlaces(holder,position);

@@ -49,8 +49,14 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
         Users user = coworkerList.get(position);
 
         if(user.getRestaurantName()==null){
+            if(user.getUsername()==null){
+                holder.firebaseUserName.setText(user.getEmail()+" hasn't decided yet");
+            }
             holder.firebaseUserName.setText(user.getUsername()+" hasn't decided yet");
         }else {
+            if(user.getUsername()==null){
+                holder.firebaseUserName.setText(user.getEmail()+" is eating at "+ user.getRestaurantName());
+            }
             holder.firebaseUserName.setText(user.getUsername() + " is eating at "+ user.getRestaurantName());
         }
         //rajouter la photo quand sa fonctionne.

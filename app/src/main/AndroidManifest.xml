@@ -40,6 +40,11 @@
             android:exported="true"
             />
         <activity
+            android:name=".TwitterAuthentification"
+            android:label=""
+            android:exported="true"
+            />
+        <activity
             android:name=".MainActivity"
             android:label=""
             android:exported="true"

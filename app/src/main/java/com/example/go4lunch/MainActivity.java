@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference databaseReference;
     private Users user;
-    private Button signInButton;
+    private Button signInButton,twitter;
 
 
 
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         btnSign = findViewById(R.id.btnsign);
         facebook_button= findViewById(R.id.facebook_button);
         signInButton=findViewById(R.id.sign_in_byMail);
+        twitter=findViewById(R.id.sign_twitter);
         googleSignIn();
         mAuth = FirebaseAuth.getInstance();
         mDatabase=FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -105,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
                     startActivity(intent);
                 }
+            });
+
+            twitter.setOnClickListener(view -> {
+                Intent intent= new Intent(MainActivity.this,TwitterAuthentification.class);
+                startActivity(intent);
             });
 
     }
