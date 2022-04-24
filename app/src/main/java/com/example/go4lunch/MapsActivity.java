@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -41,6 +43,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import static com.example.go4lunch.NotificationCoworker.CHANNEL_1_ID;
 
 public class MapsActivity extends AppCompatActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback,NavigationView.OnNavigationItemSelectedListener {
@@ -173,7 +177,7 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "RestrictedApi"})
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         switch (item.getItemId()) {
@@ -190,6 +194,18 @@ public class MapsActivity extends AppCompatActivity implements
                 break;
             case R.id.setings:
               // a voir comment s'occuper des notifications.
+                //enleve la notif
+                 boolean notifOn=true;
+                 if(notifOn){
+                 NotificationCompat.Builder notifBuilder= new NotificationCompat.Builder(this,CHANNEL_1_ID);
+                 notifBuilder.mActions.clear();
+                 Toast.makeText(this,R.string.notif_off,Toast.LENGTH_LONG).show();
+                 notifOn=false;
+                 }else{
+                     NotificationCompat.Builder notifBuilder= new NotificationCompat.Builder(this,CHANNEL_1_ID);
+                     //réactiver la notif ici.
+                 }
+
                 break;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();

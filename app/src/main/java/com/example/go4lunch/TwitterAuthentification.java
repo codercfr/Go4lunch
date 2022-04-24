@@ -12,7 +12,6 @@ import com.google.firebase.auth.OAuthProvider;
 public class TwitterAuthentification extends MainActivity {
 
     private FirebaseAuth mAuth;
-    private Button twitter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

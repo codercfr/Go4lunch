@@ -51,8 +51,9 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
         if(user.getRestaurantName()==null){
             if(user.getUsername()==null){
                 holder.firebaseUserName.setText(user.getEmail()+" hasn't decided yet");
+            }else {
+                holder.firebaseUserName.setText(user.getUsername() + " hasn't decided yet");
             }
-            holder.firebaseUserName.setText(user.getUsername()+" hasn't decided yet");
         }else {
             if(user.getUsername()==null){
                 holder.firebaseUserName.setText(user.getEmail()+" is eating at "+ user.getRestaurantName());

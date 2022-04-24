@@ -37,9 +37,6 @@ public class NotificationCoworker extends Worker  {
     private List<String>userName= new ArrayList<>();
 
 
-
-
-
     public NotificationCoworker(@NonNull @NotNull Context context, @NonNull @NotNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
