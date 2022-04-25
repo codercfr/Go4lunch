@@ -57,7 +57,7 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
             holder.rating.setText(String.valueOf(rating));
             if(placeModel.getOpeningHours()!=null) {
                 //changer la string pour que ça ressemble au model.
-                if(Objects.equals(placeModel.getOpeningHours().getOpenNow(),"true")) {
+                if(placeModel.getOpeningHours().getOpenNow()){
                     holder.open.setText("Open");
                 }
                 else {

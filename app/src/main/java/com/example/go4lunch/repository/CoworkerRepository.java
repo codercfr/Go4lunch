@@ -38,9 +38,6 @@ public class CoworkerRepository {
         firebaseUser=mAuth.getCurrentUser();
         try {
         usersList.clear();
-        //try to get all Users into a List of User
-            //possible de ne pas faire la boucle avec la bonne requête.
-                //databaseReference.child("Users").get().addOnSuccessListener(dataSnapshot -> usersList= (List<Users>) dataSnapshot.getValue(Users.class));
             ValueEventListener eventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {

@@ -48,36 +48,39 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
     public void onBindViewHolder(@NonNull @NotNull CoworkerAdapter.ViewHolder holder, int position) {
         Users user = coworkerList.get(position);
 
-        if(user.getRestaurantName()==null){
-            if(user.getUsername()==null){
-                holder.firebaseUserName.setText(user.getEmail()+" hasn't decided yet");
-            }else {
+        if (user.getRestaurantName() == null) {
+            if (user.getUsername() == null) {
+                holder.firebaseUserName.setText(user.getEmail() + " hasn't decided yet");
+            } else {
                 holder.firebaseUserName.setText(user.getUsername() + " hasn't decided yet");
             }
-        }else {
-            if(user.getUsername()==null){
-                holder.firebaseUserName.setText(user.getEmail()+" is eating at "+ user.getRestaurantName());
+        } else {
+            if (user.getUsername() == null) {
+                holder.firebaseUserName.setText(user.getEmail() + " is eating at " + user.getRestaurantName());
             }
-            holder.firebaseUserName.setText(user.getUsername() + " is eating at "+ user.getRestaurantName());
+            holder.firebaseUserName.setText(user.getUsername() + " is eating at " + user.getRestaurantName());
         }
         //rajouter la photo quand sa fonctionne.
         try {
             Glide.with(holder.firebaseUserPhoto.getContext())
                     .load(user.getPhotoUser())
                     .into(holder.firebaseUserPhoto);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), ShowRestaurantActivity.class);
-            intent.putExtra("ID",user.getPlaceId());
-            try {
-                view.getContext().startActivity(intent);
-            }
-            catch (Exception exception){
-                exception.printStackTrace();
-            }
-        });
+        if (user.getRestaurantName() == null) {
+            holder.itemView.setClickable(false);
+        } else {
+            holder.itemView.setOnClickListener(view -> {
+                Intent intent = new Intent(view.getContext(), ShowRestaurantActivity.class);
+                intent.putExtra("ID", user.getPlaceId());
+                try {
+                    view.getContext().startActivity(intent);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            });
+        }
     }
 
     @Override

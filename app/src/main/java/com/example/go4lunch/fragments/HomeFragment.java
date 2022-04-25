@@ -1,6 +1,7 @@
 package com.example.go4lunch.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -73,20 +74,17 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(googlePlaceAdapter);
         //creat method pour le viewmodel
-
         getCurentLocation();
 
     }
 
 
+
+
     private void getCurentLocation() {
-        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED) {
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
             currentLocation=location;
             //lancé la requete réseau.
@@ -99,10 +97,11 @@ public class HomeFragment extends Fragment {
                             restaurantName.add(googlePlaceModels.get(i).getName());
                         }
                         googlePlaceAdapter.notifyDataSetChanged();
-
                     });
-
-        });
+            });
+        }else{
+            ActivityCompat.requestPermissions((Activity) requireContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+        }
     }
 
 }
