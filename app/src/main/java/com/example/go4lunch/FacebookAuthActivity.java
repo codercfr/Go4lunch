@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 public class FacebookAuthActivity extends MainActivity {
 
@@ -36,16 +40,12 @@ public class FacebookAuthActivity extends MainActivity {
         mCallbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
 
-        LoginButton loginButton = findViewById(R.id.facebook_button);
-
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public profile"));
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
                 handleFacebookAccessToken(loginResult.getAccessToken());
-
-
                 Intent intent = new Intent(FacebookAuthActivity.this, MapsActivity.class);
                 startActivity(intent);
 
@@ -59,7 +59,7 @@ public class FacebookAuthActivity extends MainActivity {
 
             @Override
             public void onError(@NotNull FacebookException error) {
-
+                error=error;
             }
         });
 
@@ -69,7 +69,6 @@ public class FacebookAuthActivity extends MainActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
@@ -83,7 +82,6 @@ public class FacebookAuthActivity extends MainActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
@@ -98,7 +96,7 @@ public class FacebookAuthActivity extends MainActivity {
 }
 
     private void updateUI(FirebaseUser user) {
-        Intent intent = new Intent(FacebookAuthActivity.this, MainActivity.class);
+        Intent intent = new Intent(FacebookAuthActivity.this, MapsActivity.class);
         startActivity(intent);
 
     }

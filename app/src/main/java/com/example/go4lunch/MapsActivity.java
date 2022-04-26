@@ -210,8 +210,8 @@ public class MapsActivity extends AppCompatActivity implements
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 finish();
-                Intent newIntent = new Intent(this, MainActivity.class);
-                startActivity(newIntent);
+                /*Intent newIntent = new Intent(this, MainActivity.class);
+                startActivity(newIntent);*/
                 break;
     }
         drawer.closeDrawer(GravityCompat.START);

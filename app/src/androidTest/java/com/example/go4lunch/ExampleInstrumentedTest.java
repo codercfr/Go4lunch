@@ -7,6 +7,7 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,6 +40,11 @@ public class ExampleInstrumentedTest {
         ActivityScenario.launch(MainActivity.class);
     }
 
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.ACCESS_FINE_LOCATION");
+
 
     @Test
     public void useAppContext() {
@@ -47,23 +53,6 @@ public class ExampleInstrumentedTest {
         assertEquals("com.example.go4lunch", appContext.getPackageName());
     }
 
-    @Test
-    public void connection(){
-        ViewInteraction gz = onView(
-                allOf(withText("Sign in"),
-                        isDisplayed()));
-        gz.perform(click());
-
-        ViewInteraction email= onView(
-                allOf(withText("cedric"),
-                        isDisplayed()));
-        email.perform(click());
-
-        ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.action_android), withContentDescription("MapView"),
-                        isDisplayed()));
-        bottomNavigationItemView.perform(click());
-    }
 
     @Test
     public void signInByEmail(){
@@ -116,7 +105,10 @@ public class ExampleInstrumentedTest {
     }
 
     public void showListRestaurants(){
-
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.action_logo), withContentDescription("ListView"),
+                        isDisplayed()));
+        bottomNavigationItemView.perform(click());
     }
 
 

@@ -13,7 +13,7 @@
 
     <string name="facebook_app_id">456038762614418</string>
     <string name="fb_login_protocol_scheme">fb456038762614418</string>
-
+    <string name="facebook_client_token">75ca495d08f952ef6f9e6165077915ca</string>
     <!-- BOTTOM NAVIGATION VIEW -->
     <string name="bottom_navigation_menu_landscape">WorkMates</string>
     <string name="bottom_navigation_menu_logos">ListView</string>
@@ -40,7 +40,9 @@
     <string name="notif_off">notification off </string>
 
 
+    <!-- Facebook -->
 
+    <string name="facebook_key">ebcb9e8942af19cd84b7ac0edc35d74a </string>
 
 
     <string name="apiKey">AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw</string>
@@ -56,6 +58,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_maps2">Map</string>
 
 
 </resources>
