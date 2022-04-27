@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnSign = findViewById(R.id.btnsign);
         facebook_button= (LoginButton) findViewById(R.id.facebook_button);
-        facebook_button.setPermissions(Arrays.asList(EMAIL));
+        facebook_button.setPermissions(Collections.singletonList(EMAIL));
         signInButton=findViewById(R.id.sign_in_byMail);
         twitter=findViewById(R.id.sign_twitter);
         googleSignIn();

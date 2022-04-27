@@ -11,9 +11,9 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_maps">Map</string>
 
-    <string name="facebook_app_id">456038762614418</string>
-    <string name="fb_login_protocol_scheme">fb456038762614418</string>
-    <string name="facebook_client_token">75ca495d08f952ef6f9e6165077915ca</string>
+    <string name="facebook_app_id">518584183134985</string>
+    <string name="fb_login_protocol_scheme">fb518584183134985</string>
+    <string name="facebook_client_token">277b05b1ad0db2de783ee5a0deef9750</string>
     <!-- BOTTOM NAVIGATION VIEW -->
     <string name="bottom_navigation_menu_landscape">WorkMates</string>
     <string name="bottom_navigation_menu_logos">ListView</string>
