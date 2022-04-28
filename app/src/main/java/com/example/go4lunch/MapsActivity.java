@@ -22,6 +22,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.fragments.CoworkerFragment;
@@ -41,8 +43,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static com.example.go4lunch.NotificationCoworker.CHANNEL_1_ID;
 
@@ -193,28 +198,44 @@ public class MapsActivity extends AppCompatActivity implements
                 }
                 break;
             case R.id.setings:
-              // a voir comment s'occuper des notifications.
-                //enleve la notif
-                 boolean notifOn=true;
-                 if(notifOn){
+
                  NotificationCompat.Builder notifBuilder= new NotificationCompat.Builder(this,CHANNEL_1_ID);
+                 //cancel peut être pour la notification.
                  notifBuilder.mActions.clear();
                  Toast.makeText(this,R.string.notif_off,Toast.LENGTH_LONG).show();
-                 notifOn=false;
-                 }else{
-                     NotificationCompat.Builder notifBuilder= new NotificationCompat.Builder(this,CHANNEL_1_ID);
-                     //réactiver la notif ici.
+                 if(notifBuilder==null) {
+                     oneRequest();
                  }
-
                 break;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
+                FirebaseDatabase.getInstance().getReference("Token").child(user.getUid()).child("token").removeValue();
                 finish();
-                /*Intent newIntent = new Intent(this, MainActivity.class);
-                startActivity(newIntent);*/
                 break;
     }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void  oneRequest(){
+        Date nextDay= new Date();
+        Calendar cal= Calendar.getInstance();
+        cal.setTime(nextDay);
+        cal.add((Calendar.DATE),1);
+        cal.set((Calendar.HOUR_OF_DAY),12);
+        cal.set((Calendar.MINUTE),0);
+        nextDay=cal.getTime();
+        Date currentTime = Calendar.getInstance().getTime();
+        long diffhours = nextDay.getTime()-currentTime.getTime();
+        int hours=(int)(diffhours/(1000*60*60));
+        /*long diff=TimeUnit.HOURS.convert(nextDay.getTime()-currentTime.getTime(),TimeUnit.HOURS);
+        int difInt=(int) diff;*/
+
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationCoworker.class)
+                .setInitialDelay(hours, TimeUnit.DAYS)
+                .build();
+
+        WorkManager.getInstance(this).enqueue(oneTimeWorkRequest);
+
     }
 }

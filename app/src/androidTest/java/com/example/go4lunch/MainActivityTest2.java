@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -43,7 +44,7 @@ public class MainActivityTest2 {
 
     @Test
     public void mainActivityTest2() {
-        ViewInteraction gz = onView(
+        ViewInteraction ha = onView(
                 allOf(withText("Sign in"),
                         childAtPosition(
                                 allOf(withId(R.id.btnsign),
@@ -52,10 +53,15 @@ public class MainActivityTest2 {
                                                 0)),
                                 0),
                         isDisplayed()));
-        gz.perform(click());
+        ha.perform(click());
 
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.action_logo), withContentDescription("ListView"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.bottom_view),
+                                        0),
+                                1),
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
@@ -75,6 +81,26 @@ public class MainActivityTest2 {
                                 withClassName(is("android.widget.RelativeLayout")),
                                 0)));
         recyclerView.perform(actionOnItemAtPosition(0, click()));
+
+        pressBack();
+
+        ViewInteraction recyclerView2 = onView(
+                allOf(withId(R.id.savedRecyclerView),
+                        childAtPosition(
+                                withClassName(is("android.widget.RelativeLayout")),
+                                0)));
+        recyclerView2.perform(actionOnItemAtPosition(0, click()));
+
+        ViewInteraction floatingActionButton = onView(
+                allOf(withId(R.id.add_choices),
+                        childAtPosition(
+                                allOf(withId(R.id.show_restaurant),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        floatingActionButton.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

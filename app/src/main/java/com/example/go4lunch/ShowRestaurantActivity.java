@@ -125,7 +125,7 @@ public class ShowRestaurantActivity extends AppCompatActivity {
             }catch (Exception exception) {
                 exception.printStackTrace();
             }
-            OneRequest();
+            oneRequest();
             usersList.add(user);
             databaseReference.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
                     .setValue(user);
@@ -175,7 +175,7 @@ public class ShowRestaurantActivity extends AppCompatActivity {
                 .into(restaurantView);
             }
 
-    public void  OneRequest(){
+    public void  oneRequest(){
         //regarder comment calculer quand il est midi
         //délais entre 2 dates.
         Date nextDay= new Date();
