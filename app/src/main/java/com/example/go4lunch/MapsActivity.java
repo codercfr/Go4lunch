@@ -62,6 +62,7 @@ public class MapsActivity extends AppCompatActivity implements
     private FirebaseDatabase mDatabase;
     private ImageView search, navImageUser;
     private TextView navUsername,navEmail;
+    private boolean notifoff=true;
 
 
     @SuppressLint("NonConstantResourceId")
@@ -191,7 +192,11 @@ public class MapsActivity extends AppCompatActivity implements
                 Intent intent = new Intent(this, ShowRestaurantActivity.class);
                 intent.putExtra("ID",user.getPlaceId());
                 try {
-                    startActivity(intent);
+                    if(user.getRestaurantName()==null){
+                        Toast.makeText(this,R.string.coworkerChoice,Toast.LENGTH_LONG).show();
+                    }else {
+                        startActivity(intent);
+                    }
                 }
                 catch (Exception exception){
                     exception.printStackTrace();
@@ -199,13 +204,19 @@ public class MapsActivity extends AppCompatActivity implements
                 break;
             case R.id.setings:
 
-                 NotificationCompat.Builder notifBuilder= new NotificationCompat.Builder(this,CHANNEL_1_ID);
-                 //cancel peut être pour la notification.
-                 notifBuilder.mActions.clear();
-                 Toast.makeText(this,R.string.notif_off,Toast.LENGTH_LONG).show();
-                 if(notifBuilder==null) {
-                     oneRequest();
-                 }
+                if(notifoff) {
+                    NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this, CHANNEL_1_ID);
+                    //cancel peut être pour la notification.
+                    notifBuilder.mActions.clear();
+                    Toast.makeText(this, R.string.notif_off, Toast.LENGTH_LONG).show();
+                    notifoff = false;
+                }
+                else {
+                    oneRequest();
+                    Toast.makeText(this, R.string.notif_on, Toast.LENGTH_LONG).show();
+                    notifoff=true;
+                }
+
                 break;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
@@ -228,9 +239,6 @@ public class MapsActivity extends AppCompatActivity implements
         Date currentTime = Calendar.getInstance().getTime();
         long diffhours = nextDay.getTime()-currentTime.getTime();
         int hours=(int)(diffhours/(1000*60*60));
-        /*long diff=TimeUnit.HOURS.convert(nextDay.getTime()-currentTime.getTime(),TimeUnit.HOURS);
-        int difInt=(int) diff;*/
-
         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationCoworker.class)
                 .setInitialDelay(hours, TimeUnit.DAYS)
                 .build();

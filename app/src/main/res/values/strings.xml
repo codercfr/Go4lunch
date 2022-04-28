@@ -27,6 +27,7 @@
     <string name="notifcation">Restaurant chosen</string>
     <string name="coworkerChoice">hasn\'t decided yet</string>
     <string name="coworkerEat">is eating at </string>
+    <string name="notif_on">notif on </string>
 
     <!-- Identification -->
     <string name="create_account">Create your account </string>
