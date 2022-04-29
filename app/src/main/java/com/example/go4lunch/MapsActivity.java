@@ -84,7 +84,7 @@ public class MapsActivity extends AppCompatActivity implements
         search=findViewById(R.id.search);
         mDatabase=FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
         databaseReference= mDatabase.getReference("Users");
-        databaseReference.child((mAuth.getCurrentUser()).getUid()).get().addOnSuccessListener(dataSnapshot ->  {
+        databaseReference.child((Objects.requireNonNull(mAuth.getCurrentUser())).getUid()).get().addOnSuccessListener(dataSnapshot ->  {
             user= dataSnapshot.getValue(Users.class);
             navUsername.setText(Objects.requireNonNull(user).getUsername());
             navEmail.setText(user.getEmail());
@@ -206,7 +206,6 @@ public class MapsActivity extends AppCompatActivity implements
 
                 if(notifoff) {
                     NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this, CHANNEL_1_ID);
-                    //cancel peut être pour la notification.
                     notifBuilder.mActions.clear();
                     Toast.makeText(this, R.string.notif_off, Toast.LENGTH_LONG).show();
                     notifoff = false;
@@ -220,7 +219,7 @@ public class MapsActivity extends AppCompatActivity implements
                 break;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
-                FirebaseDatabase.getInstance().getReference("Token").child(user.getUid()).child("token").removeValue();
+                //FirebaseDatabase.getInstance().getReference("Token").child(user.getUid()).child("token").removeValue();
                 finish();
                 break;
     }

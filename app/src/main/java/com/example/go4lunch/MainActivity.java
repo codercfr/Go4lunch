@@ -3,15 +3,12 @@ package com.example.go4lunch;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.go4lunch.model.Users;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -27,8 +24,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 

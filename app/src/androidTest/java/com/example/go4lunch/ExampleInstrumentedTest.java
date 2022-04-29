@@ -1,23 +1,15 @@
 package com.example.go4lunch;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.contrib.RecyclerViewActions;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
-
-import com.example.go4lunch.adapter.GooglePlaceAdapter;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -32,7 +24,6 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -41,7 +32,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -66,10 +56,9 @@ public class ExampleInstrumentedTest {
 
 
     @Test
-    public void signInByEmail(){
+    public void createSignInByEmail(){
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.sign_in_byMail), withText("sign in by mail"),
-
                         isDisplayed()));
         materialButton.perform(click());
 
@@ -99,6 +88,32 @@ public class ExampleInstrumentedTest {
         materialButton3.perform(click());
     }
 
+    @Test
+    public void signInByEmail(){
+
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.sign_in_byMail), withText("sign in by mail"),
+                        isDisplayed()));
+        materialButton.perform(click());
+
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.etEmail),
+                        isDisplayed()));
+        appCompatEditText3.perform(replaceText("test&@gmail.com"));
+
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.etPassword),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("azdzdfsq"), closeSoftKeyboard());
+
+
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(R.id.btnSignIn2), withText("Sign_in"),
+                        isDisplayed()));
+        materialButton3.perform(click());
+
+    }
+
     // voir comment faire marcher le sign in d'abord.
     @Test
     public void showMap(){
@@ -122,7 +137,7 @@ public class ExampleInstrumentedTest {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        onView(isRoot()).perform(waitFor(5000));
+        onView(isRoot()).perform(waitFor(500));
 
         ViewInteraction recyclerView = onView(
                 allOf(withId(R.id.savedRecyclerView),
@@ -142,11 +157,118 @@ public class ExampleInstrumentedTest {
     @Test
     public void showCoworker(){
         ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.coworkerList), withContentDescription("WorkMates"),
+                allOf(withId(R.id.action_like), withContentDescription("LIKE"),
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
     }
+
+    @Test
+    public void addLikes(){
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.action_logo), withContentDescription("ListView"),
+                        isDisplayed()));
+        bottomNavigationItemView.perform(click());
+
+        onView(isRoot()).perform(waitFor(500));
+
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.savedRecyclerView),
+                        childAtPosition(
+                                withClassName(is("android.widget.RelativeLayout")),
+                                0)));
+        recyclerView.perform(actionOnItemAtPosition(0, click()));
+
+        ViewInteraction likeAction = onView(
+                allOf(withId(R.id.action_like),
+                        isDisplayed()));
+        likeAction.perform(click());
+    }
+
+    @Test
+    public void openCall(){
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.action_logo), withContentDescription("ListView"),
+                        isDisplayed()));
+        bottomNavigationItemView.perform(click());
+
+        onView(isRoot()).perform(waitFor(500));
+
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.savedRecyclerView),
+                        childAtPosition(
+                                withClassName(is("android.widget.RelativeLayout")),
+                                0)));
+        recyclerView.perform(actionOnItemAtPosition(0, click()));
+
+        ViewInteraction callAction = onView(
+                allOf(withId(R.id.action_call),
+                        isDisplayed()));
+        callAction.perform(click());
+
+    }
+
+    @Test
+    public void openWebsite(){
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.action_logo), withContentDescription("ListView"),
+                        isDisplayed()));
+        bottomNavigationItemView.perform(click());
+
+        onView(isRoot()).perform(waitFor(500));
+
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.savedRecyclerView),
+                        childAtPosition(
+                                withClassName(is("android.widget.RelativeLayout")),
+                                0)));
+        recyclerView.perform(actionOnItemAtPosition(0, click()));
+
+        ViewInteraction websiteAction = onView(
+                allOf(withId(R.id.action_website),
+                        isDisplayed()));
+        websiteAction.perform(click());
+
+    }
+
+    @Test
+    public void openYourLunch(){
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Open navigation drawer"),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction navigationMenuItemView = onView(
+                allOf(withId(R.id.lunch_restaurant),
+                        isDisplayed()));
+        navigationMenuItemView.perform(click());
+    }
+      @Test
+    public void notofication(){
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Open navigation drawer"),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction navigationMenuItemView = onView(
+                allOf(withId(R.id.setings),
+                        isDisplayed()));
+        navigationMenuItemView.perform(click());
+    }
+    @Test
+    public void logout(){
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Open navigation drawer"),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction navigationMenuItemView = onView(
+                allOf(withId(R.id.logout),
+                        isDisplayed()));
+        navigationMenuItemView.perform(click());
+    }
+
+
 
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
