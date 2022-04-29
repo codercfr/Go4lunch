@@ -38,6 +38,13 @@ public class ExampleUnitTest {
         assertEquals("3",task3.getUid());
     }
 
+    @Test
+    public void getStars(){
+        final Users task1 = new Users();
+
+
+    }
+
 
 
 }

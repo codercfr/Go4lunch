@@ -132,11 +132,6 @@ public class ShowRestaurantActivity extends AppCompatActivity {
             restaurantAdapter.notifyDataSetChanged();
         });
 
-        //rajouter la foncitonnalité d'envoyer la notif ici
-        // regarder comment faire un one time.
-        // ou regarder pour faire l'auto.
-        //workmanager
-
     }
 
 

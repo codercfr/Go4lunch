@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">Go4lunch</string>
+    <string name="action_settings">Réglagles</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Prochain</string>
+    <string name="previous">Précédent</string>
+
+    <string name="title_activity_maps">Map</string>
+
+    <string name="facebook_app_id">518584183134985</string>
+    <string name="fb_login_protocol_scheme">fb518584183134985</string>
+    <string name="facebook_client_token">277b05b1ad0db2de783ee5a0deef9750</string>
+    <!-- BOTTOM NAVIGATION VIEW -->
+    <string name="bottom_navigation_menu_landscape">Collégues</string>
+    <string name="bottom_navigation_menu_logos">Liste</string>
+    <string name="bottom_navigation_menu_android">Carte</string>
+    <string name="hello">hello</string>
+    <!-- NAV RESTAURANT -->
+    <string name="navigation_call">APPELER</string>
+    <string name="navigation_like">AIMER</string>
+    <string name="navigation_website">SITE</string>
+    <!-- NOTIFICATION -->
+    <string name="notifcation">Restaurant Choisit</string>
+    <string name="coworkerChoice">n\'a pas encore decidé</string>
+    <string name="coworkerEat">va manger à </string>
+    <string name="notif_on">notif activé </string>
+
+    <!-- Button Choosen restaurant -->
+    <string name="Like">Aimer</string>
+    <string name="Call">Appeler</string>
+    <string name="Website">site </string>
+
+
+    <!-- Identification -->
+    <string name="create_account">Crée ton compte </string>
+    <string name="email">email </string>
+    <string name="password">mot de passe  </string>
+    <string name="or">ou  </string>
+    <string name="sign_in">s\'authentifier </string>
+    <string name="sign_in_nogoogle">s\'authentifier par mail </string>
+    <string name="sign_twitter">Twitter </string>
+    <string name="notif_off">notif désactivé </string>
+
+
+    <!-- Facebook -->
+
+    <string name="facebook_key">ebcb9e8942af19cd84b7ac0edc35d74a </string>
+
+
+    <string name="apiKey">AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_retro">localisation</string>
+
+    <!-- NAV DRAWER -->
+    <string name="lunch_restaurant">Ton Restaurant</string>
+    <string name="setings">Réglages</string>
+    <string name="logout">Déconnecter </string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_maps2">Map</string>
+
+
+</resources>
