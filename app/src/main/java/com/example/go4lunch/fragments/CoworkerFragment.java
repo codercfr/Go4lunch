@@ -30,7 +30,7 @@ public class CoworkerFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private List<Users> usersList = new ArrayList<>();
-    private CoworkerAdapter coworkerAdapter = new CoworkerAdapter(usersList);
+    private CoworkerAdapter coworkerAdapter ;
     private CoworkerViewModel coworkerViewModel;
     private ArrayList<String>restaurantName= new ArrayList<>();
 
@@ -40,6 +40,7 @@ public class CoworkerFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.coworker_recyclerview, container, false);
         recyclerView=rootView.findViewById(R.id.show_coworker_recyclerview);
+        coworkerAdapter= new CoworkerAdapter(usersList,requireContext());
         coworkerViewModel=new ViewModelProvider(this).get(CoworkerViewModel.class);
         return rootView;
     }

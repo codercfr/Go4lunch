@@ -27,12 +27,13 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
 
     private List<Users> coworkerList;
 
-
     //demandé si autre façon d'ajouter du context.
-    private Context context;
+    Context context;
 
-    public CoworkerAdapter(List<Users> usersList){
+    public CoworkerAdapter(List<Users> usersList,Context context){
         this.coworkerList=usersList;
+        this.context=context;
+
     }
     @NonNull
     @NotNull
@@ -50,15 +51,15 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
 
         if (user.getRestaurantName() == null) {
             if (user.getUsername() == null) {
-                holder.firebaseUserName.setText(user.getEmail() + " hasn't decided yet");
+                holder.firebaseUserName.setText(user.getEmail() + ""+ context.getString(R.string.coworkerChoice));
             } else {
-                holder.firebaseUserName.setText(user.getUsername() + " hasn't decided yet");
+                holder.firebaseUserName.setText(user.getUsername() + context.getString(R.string.coworkerChoice));
             }
         } else {
             if (user.getUsername() == null) {
-                holder.firebaseUserName.setText(user.getEmail() + " is eating at " + user.getRestaurantName());
+                holder.firebaseUserName.setText(user.getEmail() + " "+context.getString(R.string.coworker_restaurant)+" " + user.getRestaurantName());
             }
-            holder.firebaseUserName.setText(user.getUsername() + " is eating at " + user.getRestaurantName());
+            holder.firebaseUserName.setText(user.getUsername() + " "+context.getString(R.string.coworker_restaurant)+" " + user.getRestaurantName());
         }
         //rajouter la photo quand sa fonctionne.
         try {

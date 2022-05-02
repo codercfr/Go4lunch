@@ -26,6 +26,8 @@
     <string name="coworkerChoice">n\'a pas encore decidé</string>
     <string name="coworkerEat">va manger à </string>
     <string name="notif_on">notif activé </string>
+    <string name="joining">vous rejoins </string>
+    <string name="coworker_restaurant">va manger à  </string>
 
     <!-- Button Choosen restaurant -->
     <string name="Like">Aimer</string>

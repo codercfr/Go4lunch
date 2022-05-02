@@ -57,7 +57,7 @@ public class ShowRestaurantActivity extends AppCompatActivity {
     private FloatingActionButton restaurantForLunch;
     private List<Users> usersList= new ArrayList<>();
     //S'occuper de la liste renvoyer dans l'adapteur du RecyclerView
-    private RestaurantAdapter restaurantAdapter = new RestaurantAdapter(usersList);
+    private RestaurantAdapter restaurantAdapter = new RestaurantAdapter(usersList,this);
 
 
     protected void onCreate(Bundle savedInstanceState) {

@@ -21,11 +21,14 @@
     <string name="navigation_call">Call</string>
     <string name="navigation_like">Like</string>
     <string name="navigation_website">Website</string>
+    <string name="coworker_restaurant">is eating at  </string>
     <!-- NOTIFICATION -->
     <string name="notifcation">Restaurant chosen</string>
     <string name="coworkerChoice">hasn\'t decided yet</string>
     <string name="coworkerEat">is eating at </string>
     <string name="notif_on">notif on </string>
+    <string name="joining">joining </string>
+
 
     <!-- Button Choosen restaurant -->
     <string name="Like">LIKE</string>
