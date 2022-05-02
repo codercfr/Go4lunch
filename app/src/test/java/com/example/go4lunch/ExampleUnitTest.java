@@ -42,8 +42,12 @@ public class ExampleUnitTest {
     public void getStars(){
         final Users task1 = new Users();
 
-
     }
+
+    // récupérer le restaurant.
+
+    //récupérer la liste des restauarants
+
 
 
 

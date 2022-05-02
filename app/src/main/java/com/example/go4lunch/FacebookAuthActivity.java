@@ -60,6 +60,7 @@ public class FacebookAuthActivity extends MainActivity {
 
             @Override
             public void onError(@NotNull FacebookException error) {
+
                 error=error;
             }
         });
