@@ -99,7 +99,6 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
            firebaseUserName=itemView.findViewById(R.id.name_firabase_user);
            firebaseUserPhoto=itemView.findViewById(R.id.img_firebase_user);
 
-
         }
 
     }

@@ -30,6 +30,7 @@
     <string name="joining">joining </string>
 
 
+
     <!-- Button Choosen restaurant -->
     <string name="Like">LIKE</string>
     <string name="Call">CALL</string>
@@ -48,10 +49,10 @@
 
 
     <!-- Facebook -->
+    <string name="facebook_application_id" translatable="false">518584183134985</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb518584183134985</string>
 
-    <string name="facebook_key">ebcb9e8942af19cd84b7ac0edc35d74a </string>
-
-
+    <string name="facebook_key">ebcb9e8942af19cd84b7ac0edc35d74a</string>
     <string name="apiKey">AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

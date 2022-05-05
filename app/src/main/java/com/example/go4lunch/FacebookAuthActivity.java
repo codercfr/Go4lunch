@@ -40,9 +40,11 @@ public class FacebookAuthActivity extends MainActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-        facebook_button.setPermissions("email","public_profile");
+        //LoginManager.getInstance().setPermissions("email","public_profile");
         //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public profile"));
-        facebook_button.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        //LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        facebook_button.setPermissions("email","public_profile");
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
 

@@ -17,6 +17,8 @@ public class TwitterAuthentification extends MainActivity {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
 
+        // regarder si c'est possible de passer en V2
+        // tester d'activer l'élevated dans le twitter dev account -> Products en haut ELEVATED
 
         OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
 
