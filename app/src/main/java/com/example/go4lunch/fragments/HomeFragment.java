@@ -1,6 +1,7 @@
 package com.example.go4lunch.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -42,6 +43,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import okhttp3.HttpUrl;
+
+import static com.example.go4lunch.webServices.RetrofitClient.BASE_URL_Google;
+
 
 public class HomeFragment extends Fragment {
     @NonNull
@@ -55,12 +60,13 @@ public class HomeFragment extends Fragment {
     private Location currentLocation;
 
 
+    @SuppressLint("VisibleForTests")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_saved_places, container, false);
-        retrofitApi = RetrofitClient.getRetrofitClient().create(RetrofitApi.class);
+        retrofitApi = RetrofitClient.getRetrofitClient(HttpUrl.get(BASE_URL_Google)).create(RetrofitApi.class);
         recyclerView=rootView.findViewById(R.id.savedRecyclerView);
         // remplacer par le autocomplete de google
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());

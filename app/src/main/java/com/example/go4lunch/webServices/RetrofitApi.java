@@ -16,7 +16,7 @@ public interface RetrofitApi {
     @GET
     Call<SavedPlaceResponseModel> getRestaurantIdRetrofit(@Url String url );
 
-    // crée une nouveau model pour juste un googlePlaceDetails.
+
 
 
 }

@@ -86,7 +86,11 @@ public class MapsActivity extends AppCompatActivity implements
         databaseReference= mDatabase.getReference("Users");
         databaseReference.child((Objects.requireNonNull(mAuth.getCurrentUser())).getUid()).get().addOnSuccessListener(dataSnapshot ->  {
             user= dataSnapshot.getValue(Users.class);
-            navUsername.setText(Objects.requireNonNull(user).getUsername());
+            if(user.getUsername()==null){
+                navUsername.setText(user.getEmail());
+            }else {
+                navUsername.setText(Objects.requireNonNull(user).getUsername());
+            }
             navEmail.setText(user.getEmail());
             //fonctionne pas pour l'instant
             try{
