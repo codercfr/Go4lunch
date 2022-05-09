@@ -1,9 +1,7 @@
 package com.example.go4lunch;
 
-import com.example.go4lunch.model.GooglePlaceModel;
 import com.example.go4lunch.model.Users;
 import com.example.go4lunch.response.GoogleResponseModel;
-import com.example.go4lunch.response.SavedPlaceResponseModel;
 import com.example.go4lunch.webServices.RetrofitApi;
 import com.example.go4lunch.webServices.RetrofitClient;
 
@@ -12,19 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 import static com.example.go4lunch.webServices.RetrofitClient.BASE_URL_Google;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -38,13 +30,9 @@ public class ExampleUnitTest {
 
     @Before
     public void setUp() throws IOException {
-        String baseUrl = String.format("https://maps.googleapis.com",
-                mockWebServer.getPort());
-        
         mockWebServer = new MockWebServer();
         api = RetrofitClient.getRetrofitClient(mockWebServer.url(BASE_URL_Google));
-        mockWebServer.url(baseUrl);
-        mockWebServer.start();
+
     }
 
     @After
@@ -79,7 +67,7 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void testRestaurant(){
+    public void testRestaurant() throws IOException {
         String json="{\n" +
                 "         \"business_status\" : \"OPERATIONAL\",\n" +
                 "         \"geometry\" : {\n" +
@@ -134,16 +122,22 @@ public class ExampleUnitTest {
                 "         \"vicinity\" : \"11 Jamison Street, Sydney\"\n" +
                 "      }";
 
-        MockResponse response= new MockResponse().setResponseCode(200).setBody(json);
 
-        mockWebServer.enqueue(response);
+        String jsonTest ="Amora Hotel Jamison Sydney";
 
+        Response<GoogleResponseModel> response1= api.getNearByPlaces("https://maps.googleapis.com/maps/api/place/nearbysearch/" +
+                "json?location=-33.8670522,151.1957362&radius=5000&types=restaurant&sensor=false&maxwidth=400&key=AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw").execute();
 
+        assert response1.body() != null;
+        assertEquals(jsonTest,response1.body().getGooglePlaceModelList().get(0).getName());
     }
 
     // récupérer le restaurant.
 
     //récupérer la liste des restauarants
+
+    // tester d'envoyer place details
+
 
 
 

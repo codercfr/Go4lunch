@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference databaseReference;
     private Users user;
-    private Button signInButton,twitter;
+    private Button twitter;
     private static final String EMAIL = "email";
     private CallbackManager mCallbackManager;
 
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         btnSign = findViewById(R.id.btnsign);
         facebook_button= (LoginButton) findViewById(R.id.facebook_button);
         facebook_button.setPermissions(Collections.singletonList(EMAIL));
-        signInButton=findViewById(R.id.sign_in_byMail);
+        Button signInButton = findViewById(R.id.sign_in_byMail);
         twitter=findViewById(R.id.sign_twitter);
         mCallbackManager = CallbackManager.Factory.create();
         //googleSignIn();

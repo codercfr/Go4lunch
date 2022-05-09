@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_saved_places, container, false);
-        retrofitApi = RetrofitClient.getRetrofitClient(HttpUrl.get(BASE_URL_Google)).create(RetrofitApi.class);
+        retrofitApi = RetrofitClient.getRetrofitClient(HttpUrl.get(BASE_URL_Google));
         recyclerView=rootView.findViewById(R.id.savedRecyclerView);
         // remplacer par le autocomplete de google
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());

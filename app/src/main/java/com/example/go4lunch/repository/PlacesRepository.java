@@ -32,7 +32,7 @@ public class PlacesRepository {
 
     @SuppressLint("VisibleForTests")
     public MutableLiveData<List<GooglePlaceModel>>  getRestaurantName(double currentLat, double currrentLong){
-        retrofitApi = RetrofitClient.getRetrofitClient(HttpUrl.get(BASE_URL_Google)).create(RetrofitApi .class);
+        retrofitApi = RetrofitClient.getRetrofitClient(HttpUrl.get(BASE_URL_Google));
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"+"?location="+currentLat+","
                 +currrentLong+"&radius=5000"
                 +"&types=restaurant"
@@ -65,12 +65,3 @@ public class PlacesRepository {
     }
 }
 
-
-//un repository par theme/fonction
-
-
-// viewmodel récupére les données du repository pour ce dont il a besoin
-
-//repository est un singleton
-
-//p3 regarder pour séléctionner dans le reyclerview
