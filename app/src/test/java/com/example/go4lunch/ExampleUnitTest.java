@@ -2,6 +2,7 @@ package com.example.go4lunch;
 
 import com.example.go4lunch.model.Users;
 import com.example.go4lunch.response.GoogleResponseModel;
+import com.example.go4lunch.response.SavedPlaceResponseModel;
 import com.example.go4lunch.webServices.RetrofitApi;
 import com.example.go4lunch.webServices.RetrofitClient;
 
@@ -132,6 +133,14 @@ public class ExampleUnitTest {
         assertEquals(jsonTest,response1.body().getGooglePlaceModelList().get(0).getName());
     }
 
+    @Test
+    public void getDetails() throws IOException {
+
+        String jsonTestDetails= "Amora Hotel Jamison Sydney";
+        Response<SavedPlaceResponseModel> responseModelResponse = api.getRestaurantIdRetrofit("https://maps.googleapis.com/maps/api/place/details/json?place_id=" +
+                "ChIJa51FEUGuEmsRIXRtDjLFQXM&key=AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw").execute();
+        assertEquals(jsonTestDetails,responseModelResponse.body().getSavedPlaceModel().getName());
+    }
     // récupérer le restaurant.
 
     //récupérer la liste des restauarants
