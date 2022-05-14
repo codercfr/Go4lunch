@@ -56,7 +56,6 @@ public class ShowRestaurantActivity extends AppCompatActivity {
     private SavedPlaceModel savedPlaceModel = new SavedPlaceModel();
     private FloatingActionButton restaurantForLunch;
     private List<Users> usersList= new ArrayList<>();
-    //S'occuper de la liste renvoyer dans l'adapteur du RecyclerView
     private RestaurantAdapter restaurantAdapter = new RestaurantAdapter(usersList,this);
 
 
@@ -160,8 +159,6 @@ public class ShowRestaurantActivity extends AppCompatActivity {
 
         restaurantName.setText(savedPlaceModel.getName());
         streetRestaurantName.setText(savedPlaceModel.getAddress());
-        // reprendre le int du restraunt et le set dans la méthode setNumstars.
-        //rtnRestaurant.setNumStars(savedPlaceModel.getRating().intValue());
         rtnRestaurant.setNumStars(getStarsRestaurant(savedPlaceModel));
         String urlPhoto = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photoreference="
                 + savedPlaceModel.getPhotos().get(0).getPhotoReference() + "&sensor=true&key=AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw";
@@ -171,8 +168,6 @@ public class ShowRestaurantActivity extends AppCompatActivity {
             }
 
     public void  oneRequest(){
-        //regarder comment calculer quand il est midi
-        //délais entre 2 dates.
         Date nextDay= new Date();
         Calendar cal= Calendar.getInstance();
         cal.setTime(nextDay);
@@ -183,8 +178,6 @@ public class ShowRestaurantActivity extends AppCompatActivity {
         Date currentTime = Calendar.getInstance().getTime();
         long diffhours = nextDay.getTime()-currentTime.getTime();
         int hours=(int)(diffhours/(1000*60*60));
-        /*long diff=TimeUnit.HOURS.convert(nextDay.getTime()-currentTime.getTime(),TimeUnit.HOURS);
-        int difInt=(int) diff;*/
 
         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationCoworker.class)
                 .setInitialDelay(hours, TimeUnit.DAYS)
