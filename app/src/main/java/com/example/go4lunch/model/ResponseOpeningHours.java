@@ -13,8 +13,5 @@ public class ResponseOpeningHours {
         return openNow;
     }
 
-    public void setOpenNow(Boolean openNow) {
-        this.openNow = openNow;
-    }
 }
 

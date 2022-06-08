@@ -23,8 +23,7 @@ import static com.example.go4lunch.webServices.RetrofitClient.BASE_URL_Google;
 
 public class PlacesRepository {
 
-    private List<GooglePlaceModel> listGooglePlaceModels = new ArrayList<>() ;
-    private RetrofitApi retrofitApi;
+    private final List<GooglePlaceModel> listGooglePlaceModels = new ArrayList<>() ;
     final MutableLiveData<List<GooglePlaceModel>> googlePlaceModels = new MutableLiveData<>();
 
     public PlacesRepository() {
@@ -32,7 +31,7 @@ public class PlacesRepository {
 
     @SuppressLint("VisibleForTests")
     public MutableLiveData<List<GooglePlaceModel>>  getRestaurantName(double currentLat, double currrentLong){
-        retrofitApi = RetrofitClient.getRetrofitClient(HttpUrl.get(BASE_URL_Google));
+        RetrofitApi retrofitApi = RetrofitClient.getRetrofitClient(HttpUrl.get(BASE_URL_Google));
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"+"?location="+currentLat+","
                 +currrentLong+"&radius=5000"
                 +"&types=restaurant"

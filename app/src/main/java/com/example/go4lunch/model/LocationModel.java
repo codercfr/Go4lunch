@@ -17,10 +17,6 @@ public class LocationModel {
         return lat;
     }
 
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }
-
     public Double getLng() {
         return lng;
     }

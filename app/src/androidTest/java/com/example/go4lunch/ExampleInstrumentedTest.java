@@ -15,9 +15,11 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -39,6 +41,7 @@ import static org.hamcrest.Matchers.is;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ExampleInstrumentedTest {
 
 
@@ -56,7 +59,7 @@ public class ExampleInstrumentedTest {
 
 
     @Test
-    public void createSignInByEmail(){
+    public void acreateSignInByEmail(){
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.sign_in_byMail), withText("sign in by mail"),
                         isDisplayed()));
@@ -88,41 +91,11 @@ public class ExampleInstrumentedTest {
         materialButton3.perform(click());
     }
 
-    @Test
-    public void signInByEmail(){
 
-        ViewInteraction materialButton = onView(
-                allOf(withId(R.id.sign_in_byMail), withText("sign in by mail"),
-                        isDisplayed()));
-        materialButton.perform(click());
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.etEmail),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("test&@gmail.com"));
-
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.etPassword),
-                        isDisplayed()));
-        appCompatEditText2.perform(replaceText("azdzdfsq"), closeSoftKeyboard());
-
-
-        ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.btnSignIn2), withText("Sign_in"),
-                        isDisplayed()));
-        materialButton3.perform(click());
-
-    }
 
     // voir comment faire marcher le sign in d'abord.
     @Test
-    public void showMap(){
-
-        ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.action_android), withContentDescription("MapView"),
-
-                        isDisplayed()));
-        bottomNavigationItemView.perform(click());
+    public void bshowMap(){
 
         ViewInteraction bottomNavigationItemView2 = onView(
                 allOf(withId(R.id.action_android), withContentDescription("MapView"),
@@ -131,7 +104,7 @@ public class ExampleInstrumentedTest {
 
     }
     @Test
-    public void showListRestaurants(){
+    public void cshowListRestaurants(){
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.action_logo), withContentDescription("ListView"),
                         isDisplayed()));
@@ -155,16 +128,19 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void showCoworker(){
+    public void dshowCoworker(){
+        onView(isRoot()).perform(waitFor(500));
         ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.action_like), withContentDescription("LIKE"),
+                allOf(withId(R.id.coworkerList), withContentDescription("WorkMates"),
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
+
+        //vérfier que le fragment est affiché.
 
     }
 
     @Test
-    public void addLikes(){
+    public void eaddLikes(){
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.action_logo), withContentDescription("ListView"),
                         isDisplayed()));
@@ -186,7 +162,7 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void openCall(){
+    public void fopenCall(){
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.action_logo), withContentDescription("ListView"),
                         isDisplayed()));
@@ -209,7 +185,7 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void openWebsite(){
+    public void jopenWebsite(){
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.action_logo), withContentDescription("ListView"),
                         isDisplayed()));
@@ -232,7 +208,7 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void openYourLunch(){
+    public void kopenYourLunch(){
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open navigation drawer"),
                         isDisplayed()));
@@ -244,7 +220,7 @@ public class ExampleInstrumentedTest {
         navigationMenuItemView.perform(click());
     }
       @Test
-    public void notofication(){
+    public void lnotofication(){
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open navigation drawer"),
                         isDisplayed()));
@@ -256,7 +232,7 @@ public class ExampleInstrumentedTest {
         navigationMenuItemView.perform(click());
     }
     @Test
-    public void logout(){
+    public void mlogout(){
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open navigation drawer"),
                         isDisplayed()));
@@ -266,6 +242,32 @@ public class ExampleInstrumentedTest {
                 allOf(withId(R.id.logout),
                         isDisplayed()));
         navigationMenuItemView.perform(click());
+    }
+
+    @Test
+    public void nsignInByEmail(){
+
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.sign_in_byMail), withText("sign in by mail"),
+                        isDisplayed()));
+        materialButton.perform(click());
+
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.etEmail),
+                        isDisplayed()));
+        appCompatEditText3.perform(replaceText("test&@gmail.com"));
+
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.etPassword),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("azdzdfsq"), closeSoftKeyboard());
+
+
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(R.id.btnSignIn2), withText("Sign_in"),
+                        isDisplayed()));
+        materialButton3.perform(click());
+
     }
 
 

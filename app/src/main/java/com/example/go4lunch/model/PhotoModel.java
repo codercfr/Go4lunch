@@ -1,8 +1,5 @@
 package com.example.go4lunch.model;
 
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

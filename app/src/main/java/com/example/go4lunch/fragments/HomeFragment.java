@@ -3,15 +3,12 @@ package com.example.go4lunch.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,25 +19,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.go4lunch.R;
-import com.example.go4lunch.ShowRestaurantActivity;
 import com.example.go4lunch.adapter.GooglePlaceAdapter;
 import com.example.go4lunch.model.GooglePlaceModel;
 import com.example.go4lunch.view_model.PlacesViewModel;
 import com.example.go4lunch.webServices.RetrofitApi;
 import com.example.go4lunch.webServices.RetrofitClient;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.HttpUrl;
@@ -51,11 +40,10 @@ import static com.example.go4lunch.webServices.RetrofitClient.BASE_URL_Google;
 public class HomeFragment extends Fragment {
     @NonNull
     private RecyclerView recyclerView;
-    private List<GooglePlaceModel> googlePlaceModels = new ArrayList<>();
+    private final List<GooglePlaceModel> googlePlaceModels = new ArrayList<>();
     private final GooglePlaceAdapter  googlePlaceAdapter = new GooglePlaceAdapter(googlePlaceModels);
-    private RetrofitApi retrofitApi;
     private PlacesViewModel placesViewModel;
-    private ArrayList<String>restaurantName= new ArrayList<>();
+    private final ArrayList<String>restaurantName= new ArrayList<>();
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location currentLocation;
 
@@ -66,7 +54,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_saved_places, container, false);
-        retrofitApi = RetrofitClient.getRetrofitClient(HttpUrl.get(BASE_URL_Google));
+        RetrofitApi retrofitApi = RetrofitClient.getRetrofitClient(HttpUrl.get(BASE_URL_Google));
         recyclerView=rootView.findViewById(R.id.savedRecyclerView);
         // remplacer par le autocomplete de google
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());

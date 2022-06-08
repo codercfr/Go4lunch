@@ -1,7 +1,6 @@
 package com.example.go4lunch.repository;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -21,8 +20,6 @@ public class PlaceDetailsRepository {
 
     private SavedPlaceModel savedPlaceModel= new SavedPlaceModel();
 
-    private RetrofitApi retrofitApi;
-
     final MutableLiveData<SavedPlaceModel> savedPlaceModelMutableLiveData= new MutableLiveData<>();
 
     //récupérer la valeur d'intent
@@ -32,7 +29,7 @@ public class PlaceDetailsRepository {
     @SuppressLint("VisibleForTests")
     public MutableLiveData<SavedPlaceModel> getSavedPlaceModel(String placeId){
 
-        retrofitApi = RetrofitClient.getRetrofitClient(HttpUrl.get(BASE_URL_Google));
+        RetrofitApi retrofitApi = RetrofitClient.getRetrofitClient(HttpUrl.get(BASE_URL_Google));
         String url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + placeId +
                 "&key=AIzaSyDIC9wuMhHNNjFIr6UZfb64h1Rmauaz7hw";
 

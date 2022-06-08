@@ -19,13 +19,12 @@ import com.example.go4lunch.model.Users;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHolder> {
 
 
-    private List<Users> coworkerList;
+    private final List<Users> coworkerList;
 
     //demandé si autre façon d'ajouter du context.
     Context context;
@@ -58,8 +57,9 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
         } else {
             if (user.getUsername() == null) {
                 holder.firebaseUserName.setText(user.getEmail() + " "+context.getString(R.string.coworker_restaurant)+" " + user.getRestaurantName());
+            }else {
+                holder.firebaseUserName.setText(user.getUsername() + " " + context.getString(R.string.coworker_restaurant) + " " + user.getRestaurantName());
             }
-            holder.firebaseUserName.setText(user.getUsername() + " "+context.getString(R.string.coworker_restaurant)+" " + user.getRestaurantName());
         }
         //rajouter la photo quand sa fonctionne.
         try {
@@ -90,10 +90,10 @@ public class CoworkerAdapter extends RecyclerView.Adapter<CoworkerAdapter.ViewHo
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView firebaseUserName;
-        private ImageView firebaseUserPhoto;
+        private final TextView firebaseUserName;
+        private final ImageView firebaseUserPhoto;
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
            firebaseUserName=itemView.findViewById(R.id.name_firabase_user);

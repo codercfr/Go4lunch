@@ -47,16 +47,12 @@ public class ShowRestaurantActivity extends AppCompatActivity {
     private RatingBar rtnRestaurant;
     private TextView streetRestaurantName;
     private FirebaseAuth mAuth;
-    private ImageView callButton, likeButton,websiteButton;
     private String placeId;
-    private FirebaseDatabase mDatabase;
     private DatabaseReference databaseReference;
     private Users user;
-    private List<String> likesList = new ArrayList<>();
     private SavedPlaceModel savedPlaceModel = new SavedPlaceModel();
-    private FloatingActionButton restaurantForLunch;
-    private List<Users> usersList= new ArrayList<>();
-    private RestaurantAdapter restaurantAdapter = new RestaurantAdapter(usersList,this);
+    private final List<Users> usersList= new ArrayList<>();
+    private final RestaurantAdapter restaurantAdapter = new RestaurantAdapter(usersList,this);
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,23 +62,21 @@ public class ShowRestaurantActivity extends AppCompatActivity {
         restaurantName = findViewById(R.id.restaurantname);
         rtnRestaurant = findViewById(R.id.ratingBarSelectedR);
         streetRestaurantName = findViewById(R.id.street_NameSelectedR);
-        callButton=findViewById(R.id.action_call);
-        likeButton=findViewById(R.id.action_like);
-        websiteButton=findViewById(R.id.action_website);
-        restaurantForLunch=findViewById(R.id.add_choices);
+        ImageView callButton = findViewById(R.id.action_call);
+        ImageView likeButton = findViewById(R.id.action_like);
+        ImageView websiteButton = findViewById(R.id.action_website);
+        FloatingActionButton restaurantForLunch = findViewById(R.id.add_choices);
         //crée un frag pour le faire marcher.
         RecyclerView recyclerView =(RecyclerView) findViewById(R.id.show_restaurant_recyclerview);
         //recycler vide pour l'instant.
         recyclerView.setAdapter(restaurantAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAuth = FirebaseAuth.getInstance();
-        mDatabase=FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
         databaseReference= mDatabase.getReference("Users");
         RestaurantViewModel restaurantViewModel = new ViewModelProvider(this).get(RestaurantViewModel.class);
 
-        databaseReference.child((mAuth.getCurrentUser()).getUid()).get().addOnSuccessListener(dataSnapshot ->  {
-            user= dataSnapshot.getValue(Users.class);
-        });
+        databaseReference.child((Objects.requireNonNull(mAuth.getCurrentUser())).getUid()).get().addOnSuccessListener(dataSnapshot -> user= dataSnapshot.getValue(Users.class));
         receiveData();
         restaurantViewModel.getSavedRestaurant(placeId)
                 .observe(this, savedPlaceModel -> {
@@ -145,14 +139,12 @@ public class ShowRestaurantActivity extends AppCompatActivity {
     // doit faire une requete on on passe le place id regarder la requete placedetail
     private void receiveData() {
         Intent i = getIntent();
-        String name = i.getStringExtra("ID");
-        placeId = name;
+        placeId = i.getStringExtra("ID");
     }
 
     private int getStarsRestaurant(SavedPlaceModel savedPlaceModel){
         double rating = savedPlaceModel.getRating();
-        int i = (int)rating;
-        return i;
+        return (int)rating;
     }
 
     public void getRestaurantId() {

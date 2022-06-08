@@ -1,7 +1,6 @@
 package com.example.go4lunch.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.view.LayoutInflater;
@@ -22,12 +21,11 @@ import com.example.go4lunch.model.GooglePlaceModel;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 
 public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.ViewHolder> {
 
     @NonNull
-    private  List<GooglePlaceModel> googlePlaceModels;
+    private final List<GooglePlaceModel> googlePlaceModels;
     double currentLat = -33.8670522, currrentLong = 151.1957362;
     int selected_position = 0;
 
@@ -101,23 +99,23 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
         double rating=placeModel.getRating();
         int i = (int)rating;
         switch (i){
-            case 1 :i=1;
-            holder.ratingBar.setNumStars(1);
+            case 1 :
+                holder.ratingBar.setNumStars(1);
             break;
 
-            case 2:i=2;
-            holder.ratingBar.setNumStars(2);
+            case 2:
+                holder.ratingBar.setNumStars(2);
             break;
 
-            case 3:i=3;
-            holder.ratingBar.setNumStars(3);
+            case 3:
+                holder.ratingBar.setNumStars(3);
             break;
 
-            case 4:i=4;
-            holder.ratingBar.setNumStars(4);
+            case 4:
+                holder.ratingBar.setNumStars(4);
 
-            case 5:i=5;
-            holder.ratingBar.setNumStars(5);
+            case 5:
+                holder.ratingBar.setNumStars(5);
         }
     }
     @SuppressLint("SetTextI18n")
@@ -145,13 +143,13 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView placesName;
-        private TextView street_Name;
-        private TextView rating;
-        private TextView open;
-        private RatingBar ratingBar;
-        private ImageView photoPlaces;
-        private TextView distancePlaces;
+        private final TextView placesName;
+        private final TextView street_Name;
+        private final TextView rating;
+        private final TextView open;
+        private final RatingBar ratingBar;
+        private final ImageView photoPlaces;
+        private final TextView distancePlaces;
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);

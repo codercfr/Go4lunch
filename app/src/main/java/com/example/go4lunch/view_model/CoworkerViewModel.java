@@ -3,10 +3,8 @@ package com.example.go4lunch.view_model;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.go4lunch.model.GooglePlaceModel;
 import com.example.go4lunch.model.Users;
 import com.example.go4lunch.repository.CoworkerRepository;
-import com.example.go4lunch.repository.PlacesRepository;
 
 import java.util.List;
 

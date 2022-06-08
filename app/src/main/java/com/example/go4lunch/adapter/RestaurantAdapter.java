@@ -2,7 +2,6 @@ package com.example.go4lunch.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.R;
-import com.example.go4lunch.ShowRestaurantActivity;
 import com.example.go4lunch.model.Users;
-import com.firebase.ui.auth.data.model.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
 
-    private List<Users> usersListRestaurant = new ArrayList<>();
+    private final List<Users> usersListRestaurant;
     Context context;
 
 
@@ -46,16 +38,16 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         return new ViewHolder(view);
     }
 
-    public RestaurantAdapter(List<Users> usersList){
-        this.usersListRestaurant= usersList;
-    }
-
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @NotNull RestaurantAdapter.ViewHolder holder, int position) {
         Users user=usersListRestaurant.get(position) ;
-        holder.nameUser.setText(user.getUsername()+" "+context.getString(R.string.joining));
+        if(user.getUsername()==null){
+            holder.nameUser.setText(user.getEmail()+" "+context.getString(R.string.joining));
+        }else {
+            holder.nameUser.setText(user.getUsername() + " " + context.getString(R.string.joining));
+        }
         try {
             Glide.with(holder.photoUser.getContext())
                     .load(user.getPhotoUser())
@@ -71,10 +63,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageView photoUser;
-        private TextView nameUser;
+        private final ImageView photoUser;
+        private final TextView nameUser;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);

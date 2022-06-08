@@ -57,10 +57,7 @@ public class MapsActivity extends AppCompatActivity implements
 
     private DrawerLayout drawer;
     private Users user;
-    private FirebaseAuth mAuth;
-    private DatabaseReference databaseReference;
-    private FirebaseDatabase mDatabase;
-    private ImageView search, navImageUser;
+    private ImageView navImageUser;
     private TextView navUsername,navEmail;
     private boolean notifoff=true;
 
@@ -80,12 +77,13 @@ public class MapsActivity extends AppCompatActivity implements
         navUsername = (TextView) headerView.findViewById(R.id.userNameMenu);
         navEmail=(TextView)headerView.findViewById(R.id.navEmail);
         navImageUser=(ImageView)headerView.findViewById(R.id.navImageUser);
-        mAuth = FirebaseAuth.getInstance();
-        search=findViewById(R.id.search);
-        mDatabase=FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
-        databaseReference= mDatabase.getReference("Users");
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        ImageView search = findViewById(R.id.search);
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference databaseReference = mDatabase.getReference("Users");
         databaseReference.child((Objects.requireNonNull(mAuth.getCurrentUser())).getUid()).get().addOnSuccessListener(dataSnapshot ->  {
             user= dataSnapshot.getValue(Users.class);
+            assert user != null;
             if(user.getUsername()==null && user.getEmail()==null){
                 navUsername.setText(user.getName());
             }

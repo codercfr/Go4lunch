@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.go4lunch.model.SavedPlaceModel;
 import com.example.go4lunch.repository.PlaceDetailsRepository;
-import com.example.go4lunch.response.SavedPlaceResponseModel;
 
 public class RestaurantViewModel extends ViewModel {
 

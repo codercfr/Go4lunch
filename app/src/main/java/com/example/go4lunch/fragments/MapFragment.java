@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -44,11 +43,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private GoogleMap mMap;
     private Marker currentMarker;
     private Location currentLocation;
-    private LocationRequest locationRequest;
     private List<GooglePlaceModel> googlePlaceModelList;
-    private FusedLocationProviderClient fusedLocationProviderClient;
     private MapsViewModel mapsViewModel;
-    private ArrayList<String>restaurantName= new ArrayList<>();
+    private final ArrayList<String>restaurantName= new ArrayList<>();
     private ArrayAdapter<String>adapter;
 
 
@@ -71,11 +68,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
     private void setUpLocationUpdate() {
 
-        locationRequest = LocationRequest.create();
+        LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
        getCurentLocation();
 

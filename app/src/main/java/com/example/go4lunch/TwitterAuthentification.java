@@ -2,11 +2,9 @@ package com.example.go4lunch;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.go4lunch.model.Users;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,16 +17,14 @@ import java.util.Objects;
 
 public class TwitterAuthentification extends MainActivity {
 
-    private FirebaseAuth mAuth;
     private Users user;
     private DatabaseReference databaseReference;
-    private FirebaseDatabase mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase= FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
         databaseReference= mDatabase.getReference("Users");
         user=new Users();
 
@@ -55,10 +51,7 @@ public class TwitterAuthentification extends MainActivity {
                             }
                     )
                     .addOnFailureListener(
-                            e -> {
-                                Toast.makeText(this,""+e.getMessage(),Toast.LENGTH_LONG).show();
-
-                            }
+                            e -> Toast.makeText(this,""+e.getMessage(),Toast.LENGTH_LONG).show()
                             );
         } else {
 

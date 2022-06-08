@@ -14,8 +14,4 @@ public class GeometryModel {
         return location;
     }
 
-    public void setLocation(LocationModel location) {
-        this.location = location;
-    }
-
 }

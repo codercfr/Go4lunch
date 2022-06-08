@@ -1,9 +1,5 @@
 package com.example.go4lunch.model;
 
-import android.net.Uri;
-
-import androidx.annotation.Nullable;
-
 import java.util.List;
 
 public class Users {

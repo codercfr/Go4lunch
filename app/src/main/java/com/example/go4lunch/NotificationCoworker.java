@@ -24,17 +24,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class NotificationCoworker extends Worker  {
 
     private NotificationManagerCompat notificationManager;
     public static final String CHANNEL_1_ID = "channel1";
-    private FirebaseDatabase mDatabase;
     private DatabaseReference databaseReference;
     private Users user;
-    private FirebaseAuth mAuth;
-    private List<String>userName= new ArrayList<>();
+    private final List<String>userName= new ArrayList<>();
 
 
     public NotificationCoworker(@NonNull @NotNull Context context, @NonNull @NotNull WorkerParameters workerParams) {
@@ -46,10 +45,10 @@ public class NotificationCoworker extends Worker  {
     @NotNull
     @Override
     public Result doWork() {
-        mDatabase = FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
         databaseReference = mDatabase.getReference("Users");
-        mAuth = FirebaseAuth.getInstance();
-        databaseReference.child((mAuth.getCurrentUser()).getUid()).get().addOnSuccessListener(dataSnapshot -> {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        databaseReference.child((Objects.requireNonNull(mAuth.getCurrentUser())).getUid()).get().addOnSuccessListener(dataSnapshot -> {
             user = dataSnapshot.getValue(Users.class);
             try {
                 ValueEventListener eventListener = new ValueEventListener() {
@@ -57,6 +56,7 @@ public class NotificationCoworker extends Worker  {
                     public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             Users children = ds.getValue(Users.class);
+                            assert children != null;
                             if (children.getRestaurantName().equals(user.getRestaurantName())) {
                                 userName.add(children.getUsername());
                             }

@@ -7,11 +7,11 @@ import com.google.gson.annotations.SerializedName;
 public class SavedPlaceResponseModel {
     @SerializedName("result")
     @Expose
-    private SavedPlaceModel savedPlaceModel;
+    private final SavedPlaceModel savedPlaceModel;
 
     @SerializedName("error_message")
     @Expose
-    private String error;
+    private final String error;
 
     public SavedPlaceResponseModel(SavedPlaceModel savedPlaceModel, String error) {
         this.savedPlaceModel = savedPlaceModel;

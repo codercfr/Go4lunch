@@ -3,16 +3,14 @@ package com.example.go4lunch;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.go4lunch.model.Users;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -20,21 +18,14 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
-import com.firebase.ui.auth.IdpResponse;
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,12 +35,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
-
-import static com.firebase.ui.auth.AuthUI.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,10 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     LoginButton facebook_button;
-    private FirebaseDatabase mDatabase;
     private DatabaseReference databaseReference;
     private Users user;
-    private Button twitter;
     private static final String EMAIL = "email";
     private CallbackManager mCallbackManager;
 
@@ -74,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
         facebook_button= (LoginButton) findViewById(R.id.facebook_button);
         facebook_button.setPermissions(Collections.singletonList(EMAIL));
         Button signInButton = findViewById(R.id.sign_in_byMail);
-        twitter=findViewById(R.id.sign_twitter);
+        Button twitter = findViewById(R.id.sign_twitter);
         mCallbackManager = CallbackManager.Factory.create();
         //googleSignIn();
         mAuth = FirebaseAuth.getInstance();
-        mDatabase=FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://go4lunch-5272f-default-rtdb.europe-west1.firebasedatabase.app/");
         databaseReference= mDatabase.getReference("Users");
         googleSignIn();
 
@@ -124,11 +109,11 @@ public class MainActivity extends AppCompatActivity {
                                 user.setUid(account.getId());
                                 user.setUsername(account.getGivenName());
                                 user.setEmail(account.getEmail());
-                                user.setPhotoUser(account.getPhotoUrl().toString());
+                                user.setPhotoUser(Objects.requireNonNull(account.getPhotoUrl()).toString());
                                 databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                                         .setValue(user);
                             }catch (Exception e){
-                                Toast.makeText(this,"NOP",Toast.LENGTH_LONG);
+                                Toast.makeText(this,"NOP",Toast.LENGTH_LONG).show();
                             }
 
 
@@ -164,18 +149,18 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onError(FacebookException error) {
+                    public void onError(@NotNull FacebookException error) {
                     }
                 });
             });
 
-            /*signInButton.setOnClickListener(view -> {
+            signInButton.setOnClickListener(view -> {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                 if(firebaseUser==null) {
                     Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
                     startActivity(intent);
                 }
-            });*/
+            });
 
             twitter.setOnClickListener(view -> {
                 Intent intent= new Intent(MainActivity.this,TwitterAuthentification.class);
@@ -209,13 +194,13 @@ public class MainActivity extends AppCompatActivity {
                             user.setUid(userFirebase.getUid());
                             user.setUsername(userFirebase.getEmail());
                             user.setEmail(userFirebase.getEmail());
-                            user.setPhotoUser(userFirebase.getPhotoUrl().toString());
+                            user.setPhotoUser(Objects.requireNonNull(userFirebase.getPhotoUrl()).toString());
                             databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                                     .setValue(user);
                             Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                             startActivity(intent);
                         }catch (Exception e){
-                            Toast.makeText(this,"NOP",Toast.LENGTH_LONG);
+                            Toast.makeText(this,"NOP",Toast.LENGTH_LONG).show();
                         }
                     } else {
                     }
